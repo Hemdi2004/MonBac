@@ -1,0 +1,26 @@
+<h1>New Course</h1>
+
+<form method="POST" action="/admin/courses">
+  <div>
+    <label>Title</label>
+    <input name="title" required />
+  </div>
+
+  <div>
+    <label>Description</label>
+    <textarea name="description"></textarea>
+  </div>
+
+  <div class="field">
+  <label for="level">Niveau</label>
+  <select id="level" name="level" required>
+    <option value="2bac">2ème année Bac</option>
+    <option value="1bac">1ère année Bac</option>
+    <option value="college">Collège</option>
+  </select>
+</div>
+
+  <button>Create</button>
+</form>
+
+<a href="/admin/courses">Back</a>

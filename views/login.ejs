@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="/public/style.css">
+</head>
+<body>
+  <div class="auth">
+  <div class="auth-card card">
+    <div class="auth-head">
+      <span class="badge">Admin</span>
+      <h1>Admin Login</h1>
+      <p class="muted">Access the dashboard to manage courses, lessons, and PDFs.</p>
+    </div>
+
+    <% if (error) { %>
+      <div class="alert alert-error"><%= error %></div>
+    <% } %>
+
+    <form method="POST" action="/login" class="form">
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="email" required />
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required />
+      </div>
+
+      <button class="btn btn-primary btn-block" type="submit">Login</button>
+    </form>
+  </div>
+</div>
+</body>
+</html>

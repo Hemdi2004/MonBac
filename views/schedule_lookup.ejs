@@ -1,0 +1,26 @@
+<h1><%- __("schedule_title") %></h1>
+
+<section class="card schedule-card">
+  <p class="lead" style="margin-top:0;">
+    <%- __("schedule_lead") %>
+  </p>
+
+  <% if (error) { %>
+    <div class="alert alert-error">
+      <strong><%- __("schedule_error") %></strong> <%= error %>
+    </div>
+  <% } %>
+
+  <form method="POST" action="/emploi-du-temps" class="schedule-form">
+    <div class="field">
+      <label for="code"><%- __("schedule_label_code") %></label>
+      <input id="code" type="text" name="code" required placeholder="<%- __("schedule_placeholder") %>" autocomplete="off">
+      <p class="muted" style="margin:6px 0 0;"><%- __("schedule_muted_info") %></p>
+    </div>
+
+    <div class="cta-row" style="margin:12px 0 0;">
+      <button type="submit" class="btn btn-primary"><%- __("schedule_btn_view") %></button>
+      <a class="btn btn-secondary" href="/professeur"><%- __("schedule_btn_no_code") %></a>
+    </div>
+  </form>
+</section>

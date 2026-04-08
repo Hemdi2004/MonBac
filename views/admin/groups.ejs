@@ -1,0 +1,97 @@
+<div class="page-head">
+  <div>
+    <h1>Gestion des groupes</h1>
+    <p class="muted">Créer, modifier, consulter les membres et supprimer des groupes.</p>
+  </div>
+  <a class="btn btn-secondary" href="/admin">← Retour</a>
+</div>
+
+<% if (error) { %>
+  <div class="card" style="border-color:#fecaca; background:#fff1f2;">
+    <p style="margin:0; font-weight:900;">Erreur</p>
+    <p class="muted" style="margin:6px 0 0;"><%= error %></p>
+  </div>
+<% } %>
+
+<section class="card">
+  <h2>Créer un groupe</h2>
+
+  <form method="POST" action="/admin/groups" class="form">
+    <div class="field">
+      <label for="name">Nom du groupe</label>
+      <input id="name" type="text" name="name" required>
+    </div>
+
+    <div class="field">
+      <label for="level">Niveau</label>
+      <select id="level" name="level" required>
+        <option value="2bac">2ème bac</option>
+        <option value="1bac">1ère bac</option>
+        <option value="college">Collège</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="type">Type</label>
+      <select id="type" name="type" required>
+        <option value="general">Général</option>
+        <option value="revision">Révision</option>
+        <option value="exam">Préparation examens</option>
+        <option value="suivi">Suivi</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="public_code">Code public (optionnel, unique)</label>
+      <input id="public_code" type="text" name="public_code" placeholder="Ex: 2BAC-REV-A">
+      <p class="muted">Laisser vide si vous ne l’utilisez pas.</p>
+    </div>
+
+    <div class="cta-row">
+      <button class="btn btn-primary" type="submit">Créer</button>
+    </div>
+  </form>
+</section>
+
+<section class="home-section">
+  <h2 class="section-title">Groupes existants</h2>
+
+  <% if (!groups || groups.length === 0) { %>
+    <section class="card">
+      <p class="muted" style="margin:0;">Aucun groupe pour le moment.</p>
+    </section>
+  <% } else { %>
+    <section class="card">
+      <div class="table">
+        <div class="table-row cols-5">
+          <div>Groupe</div>
+          <div>Niveau</div>
+          <div>Type</div>
+          <div>Code</div>
+          <div style="text-align:right;">Actions</div>
+        </div>
+
+        <% groups.forEach(g => { %>
+          <div class="table-row" style="grid-template-columns: 2fr 1fr 1fr 1fr 2fr;">
+            <div><strong><%= g.name %></strong></div>
+            <div class="muted"><%= g.level %></div>
+            <div class="muted"><%= g.type %></div>
+            <div class="muted"><%= g.public_code || "—" %></div>
+
+            <div style="text-align:right;">
+              <div class="cta-row" style="justify-content:flex-end; margin:0;">
+                <a class="btn btn-secondary btn-sm" href="/admin/groups/<%= g.id %>/members">Membres</a>
+                <a class="btn btn-secondary btn-sm" href="/admin/groups/<%= g.id %>/edit">Edit</a>
+
+                <form method="POST" action="/admin/groups/<%= g.id %>/delete" class="inline"
+                      onsubmit="return confirm('Supprimer ce groupe ?');">
+                  <button class="btn btn-secondary btn-sm" type="submit">Delete</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </section>
+  <% } %>
+</section>

@@ -1,0 +1,56 @@
+<div class="page-head">
+  <div>
+    <h1>Edit lesson</h1>
+    <p class="muted">
+      Course: <strong><%= lesson.course_title %></strong> ·
+      Chapter: <strong><%= lesson.chapter_title %></strong>
+    </p>
+  </div>
+
+  <a class="btn btn-secondary" href="/admin/chapters/<%= lesson.chapter_id %>/lessons">
+    ← Back
+  </a>
+</div>
+
+<% if (error) { %>
+  <div class="alert alert-error"><%= error %></div>
+<% } %>
+
+<section class="card">
+  <form method="POST" action="/admin/lessons/<%= lesson.id %>/edit" class="form">
+    <div class="field">
+      <label for="title">Lesson title</label>
+      <input id="title" name="title" required value="<%= lesson.title %>" />
+    </div>
+
+    <div class="field">
+      <label for="position">Position (order)</label>
+      <input id="position" name="position" type="number" value="<%= lesson.position || 0 %>" />
+    </div>
+
+    <div class="field">
+      <label for="content">Content (optional)</label>
+      <textarea id="content" name="content" rows="6"><%= lesson.content || "" %></textarea>
+    </div>
+
+    <div class="field">
+      <label for="objective">Objectif (1–3 phrases)</label>
+      <textarea id="objective" name="objective" rows="3"><%= lesson.objective || "" %></textarea>
+    </div>
+
+    <div class="field">
+      <label for="exam_points">Ce qui tombe à l’examen (1 item per line)</label>
+      <textarea id="exam_points" name="exam_points" rows="6"><%= lesson.exam_points || "" %></textarea>
+    </div>
+
+    <div class="field">
+      <label for="common_mistakes">Erreurs fréquentes (1 item per line)</label>
+      <textarea id="common_mistakes" name="common_mistakes" rows="6"><%= lesson.common_mistakes || "" %></textarea>
+    </div>
+
+    <div class="cta-row">
+      <button class="btn btn-primary" type="submit">Save changes</button>
+      <a class="btn btn-secondary" href="/admin/chapters/<%= lesson.chapter_id %>/lessons">Cancel</a>
+    </div>
+  </form>
+</section>

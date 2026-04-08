@@ -1,0 +1,45 @@
+<div class="page-head">
+  <div>
+    <h1>Modifier le groupe</h1>
+    <p class="muted">Mise à jour du groupe.</p>
+  </div>
+  <a class="btn btn-secondary" href="/admin/groups">← Retour</a>
+</div>
+
+<section class="card">
+  <form method="POST" action="/admin/groups/<%= group.id %>/edit" class="form">
+
+    <div class="field">
+      <label>Nom du groupe</label>
+      <input name="name" required value="<%= group.name %>">
+    </div>
+
+    <div class="field">
+      <label>Niveau</label>
+      <select name="level" required>
+        <option value="2bac" <%= group.level === '2bac' ? 'selected' : '' %>>2ème Bac</option>
+        <option value="1bac" <%= group.level === '1bac' ? 'selected' : '' %>>1ère Bac</option>
+        <option value="college" <%= group.level === 'college' ? 'selected' : '' %>>Collège</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Type</label>
+      <select name="type" required>
+        <option value="public" <%= group.type === 'public' ? 'selected' : '' %>>Public</option>
+        <option value="private" <%= group.type === 'private' ? 'selected' : '' %>>Privé</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Code public</label>
+      <input name="public_code" value="<%= group.public_code || '' %>">
+      <p class="muted">Laisser vide si non utilisé.</p>
+    </div>
+
+    <div class="cta-row">
+      <button class="btn btn-primary">Enregistrer</button>
+      <a class="btn btn-secondary" href="/admin/groups">Annuler</a>
+    </div>
+  </form>
+</section>

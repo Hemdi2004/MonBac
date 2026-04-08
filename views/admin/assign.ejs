@@ -1,0 +1,56 @@
+<div class="page-head">
+  <div>
+    <h1>Affectation des élèves aux groupes</h1>
+    <p class="muted">Affecter les élèves acceptés à un groupe.</p>
+  </div>
+  <a class="btn btn-secondary" href="/admin">← Retour</a>
+</div>
+
+<section class="card">
+  <h2>Élèves acceptés</h2>
+
+  <% if (!students || students.length === 0) { %>
+    <p class="muted" style="margin:0;">Aucun élève accepté pour le moment.</p>
+  <% } else { %>
+    <div class="table">
+      <div class="table-row table-head" style="grid-template-columns: 2fr 1fr 1fr 2fr 2fr;">
+        <div>Nom</div>
+        <div>Niveau</div>
+        <div>Objectif</div>
+        <div>WhatsApp</div>
+        <div style="text-align:right;">Affectation</div>
+      </div>
+
+      <% students.forEach(s => { %>
+        <div class="table-row" style="grid-template-columns: 2fr 1fr 1fr 2fr 2fr;">
+          <div><strong><%= s.name %></strong></div>
+          <div class="muted"><%= s.level %></div>
+          <div class="muted"><%= s.objective %></div>
+          <div class="muted"><%= s.whatsapp %></div>
+
+          <div style="text-align:right;">
+            <form method="POST" action="/admin/assign" class="inline">
+              <input type="hidden" name="student_id" value="<%= s.id %>">
+
+              <div class="cta-row" style="justify-content:flex-end; margin:0;">
+                <select name="group_id" required>
+                  <% groups.forEach(g => { %>
+                    <option value="<%= g.id %>">
+                      <%= g.name %> — <%= g.level %> — <%= g.type %>
+                    </option>
+                  <% }) %>
+                </select>
+
+                <button type="submit" class="btn btn-primary btn-sm">Affecter</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+
+    <p class="muted" style="margin-top:10px;">
+      Astuce : créez d’abord vos groupes, puis affectez les élèves un par un.
+    </p>
+  <% } %>
+</section>

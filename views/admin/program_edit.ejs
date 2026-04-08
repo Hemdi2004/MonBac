@@ -1,0 +1,39 @@
+<div class="page-head">
+  <div>
+    <h1>Modifier programme</h1>
+    <p class="muted">Mettre à jour le titre, niveau, description.</p>
+  </div>
+  <a class="btn btn-secondary" href="/admin/programs">← Retour</a>
+</div>
+
+<% if (error) { %>
+  <div class="alert alert-error"><%= error %></div>
+<% } %>
+
+<section class="card">
+  <form method="POST" action="/admin/programs/<%= program.id %>/edit" class="form">
+    <div class="field">
+      <label for="title">Titre</label>
+      <input id="title" name="title" required value="<%= program.title %>">
+    </div>
+
+    <div class="field">
+      <label for="level">Niveau</label>
+      <select id="level" name="level" required>
+        <option value="2bac" <%= program.level === "2bac" ? "selected" : "" %>>2ème Bac</option>
+        <option value="1bac" <%= program.level === "1bac" ? "selected" : "" %>>1ère Bac</option>
+        <option value="college" <%= program.level === "college" ? "selected" : "" %>>Collège</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="description">Description</label>
+      <textarea id="description" name="description" rows="5"><%= program.description || "" %></textarea>
+    </div>
+
+    <div class="cta-row">
+      <button class="btn btn-primary" type="submit">Enregistrer</button>
+      <a class="btn btn-secondary" href="/admin/programs">Annuler</a>
+    </div>
+  </form>
+</section>

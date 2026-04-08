@@ -1,0 +1,59 @@
+<div class="page-head">
+  <div>
+    <h1>Gestion de la communauté</h1>
+    <p class="muted">Valider ou refuser les demandes d’accès.</p>
+  </div>
+  <a class="btn btn-secondary" href="/admin">← Retour</a>
+</div>
+
+
+<section class="card">
+  <h2>Demandes</h2>
+
+  <% if (!requests || requests.length === 0) { %>
+    <p class="muted" style="margin:0;">Aucune demande pour le moment.</p>
+  <% } else { %>
+    <div class="table">
+      <div class="table-row table-head" style="grid-template-columns: 2fr 1fr 1fr 2fr 1fr 2fr;">
+        <div>Nom</div>
+        <div>Niveau</div>
+        <div>Objectif</div>
+        <div>WhatsApp</div>
+        <div>Status</div>
+        <div style="text-align:right;">Action</div>
+      </div>
+
+      <% requests.forEach(r => { %>
+        <div class="table-row" style="grid-template-columns: 2fr 1fr 1fr 2fr 1fr 2fr;">
+          <div><strong><%= r.name %></strong></div>
+          <div class="muted"><%= r.level %></div>
+          <div class="muted"><%= r.objective %></div>
+          <div class="muted"><%= r.whatsapp %></div>
+
+          <div>
+            <% if (r.status === "pending") { %>
+              <span class="badge" style="margin:0;">En attente</span>
+            <% } else if (r.status === "accepted") { %>
+              <span class="badge" style="margin:0; background:#ecfdf5; color:#065f46;">Accepté</span>
+            <% } else if (r.status === "rejected") { %>
+              <span class="badge" style="margin:0; background:#fff1f2; color:#9f1239;">Refusé</span>
+            <% } else { %>
+              <span class="muted"><%= r.status %></span>
+            <% } %>
+          </div>
+
+          <div style="text-align:right;">
+            <div class="cta-row" style="justify-content:flex-end; margin:0;">
+              <a class="btn btn-secondary btn-sm" href="/admin/community/accept/<%= r.id %>">Accepter</a>
+              <a class="btn btn-secondary btn-sm" href="/admin/community/reject/<%= r.id %>">Refuser</a>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+
+    <p class="muted" style="margin-top:10px;">
+      Astuce : une demande acceptée doit ensuite être affectée à un groupe (Affectation).
+    </p>
+  <% } %>
+</section>

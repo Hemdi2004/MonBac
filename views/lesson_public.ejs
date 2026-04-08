@@ -1,0 +1,206 @@
+<nav class="breadcrumb">
+  <a href="/">Accueil</a>
+  <span class="sep">›</span>
+  <a href="/course/<%= lesson.course_slug %>"><%= lesson.course_title %></a>
+  <span class="sep">›</span>
+  <span class="current"><%= lesson.title %></span>
+</nav>
+<a class="btn btn-secondary return-btn" href="javascript:history.back()">← Retour</a>
+<div class="lesson-layout">
+
+  <!-- Sidebar TOC -->
+  <aside class="toc card">
+    <h3 class="toc-title">Plan du cours</h3>
+
+    <%
+      const grouped = {};
+      (toc || []).forEach(row => {
+        if (!grouped[row.chapter_id]) {
+          grouped[row.chapter_id] = { title: row.chapter_title, lessons: [] };
+        }
+        if (row.lesson_id) {
+          grouped[row.chapter_id].lessons.push({
+            id: row.lesson_id,
+            title: row.lesson_title
+          });
+        }
+      });
+
+      const chapterOrder = [];
+      const seen = new Set();
+      (toc || []).forEach(r => {
+        if (!seen.has(r.chapter_id)) {
+          seen.add(r.chapter_id);
+          chapterOrder.push(r.chapter_id);
+        }
+      });
+    %>
+
+    <div class="toc-groups">
+      <% chapterOrder.forEach(chId => { %>
+        <section class="toc-group">
+          <div class="toc-chapter"><%= grouped[chId].title %></div>
+
+          <ul class="toc-list">
+            <% grouped[chId].lessons.forEach(ls => { 
+                 const isActive = Number(ls.id) === Number(lesson.id);
+            %>
+              <li>
+                <a class="toc-link <%= isActive ? 'active' : '' %>" href="/lesson/<%= ls.id %>">
+                  <%= ls.title %>
+                </a>
+              </li>
+            <% }) %>
+          </ul>
+        </section>
+      <% }) %>
+    </div>
+  </aside>
+
+  <!-- Main lesson content -->
+  <section class="lesson-main">
+    <header class="lesson-header">
+      <h1 class="lesson-title"><%= lesson.title %></h1>
+      <p class="lesson-meta">
+        Chapitre : <strong><%= lesson.chapter_title %></strong>
+      </p>
+    </header>
+
+    <% if (lesson.content) { %>
+      <div class="lesson-content card">
+        <p><%= lesson.content %></p>
+      </div>
+    <% } %>
+
+   <section class="lesson-body">
+  <% if (lesson.objective && lesson.objective.trim()) { %>
+    <div class="card lesson-panel">
+      <h2>Objectif de la leçon</h2>
+      <p class="muted"><%= lesson.objective %></p>
+    </div>
+  <% } %>
+
+  <% if (lesson.exam_points && lesson.exam_points.trim()) { %>
+    <div class="card lesson-panel">
+      <h2>Ce qui tombe à l’examen</h2>
+      <ul class="bullets">
+        <% lesson.exam_points.split('\n').forEach(line => { %>
+          <% if (line.trim()) { %>
+            <li><%= line %></li>
+          <% } %>
+        <% }) %>
+      </ul>
+    </div>
+  <% } %>
+
+  <% if (lesson.common_mistakes && lesson.common_mistakes.trim()) { %>
+    <div class="card lesson-panel">
+      <h2>Erreurs fréquentes</h2>
+      <ul class="bullets">
+        <% lesson.common_mistakes.split('\n').forEach(line => { %>
+          <% if (line.trim()) { %>
+            <li><%= line %></li>
+          <% } %>
+        <% }) %>
+      </ul>
+    </div>
+  <% } %>
+</section>
+    <section class="resources">
+      <h2 class="section-title">Ressources</h2>
+
+      <div class="resource-block">
+        <h3>Explications</h3>
+        <div class="resource-list">
+          <% (files || []).filter(f => f.category === 'explanation').forEach(f => { %>
+            <a class="resource-item" href="/files/<%= f.id %>">
+              <span class="resource-name"><%= f.original_name %></span>
+              <span class="resource-meta">PDF</span>
+            </a>
+          <% }) %>
+          <% if (!(files || []).some(f => f.category === 'explanation')) { %>
+            <div style="padding: 1rem; border: 1px dashed #e5e7eb; border-radius: 12px; background: #f9fafb; display: flex; align-items: center; gap: 10px;">
+              <i data-lucide="file-question" style="width: 24px; height: 24px; color: #d1d5db;"></i>
+              <p style="color: #9ca3af; margin: 0; font-size: 0.95rem;">Aucune explication pour le moment.</p>
+            </div>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="resource-block">
+        <h3>Exercices</h3>
+        <div class="resource-list">
+          <% (files || []).filter(f => f.category === 'exercise').forEach(f => { %>
+            <a class="resource-item" href="/files/<%= f.id %>">
+              <span class="resource-name"><%= f.original_name %></span>
+              <span class="resource-meta">PDF</span>
+            </a>
+          <% }) %>
+          <% if (!(files || []).some(f => f.category === 'exercise')) { %>
+            <div style="padding: 1rem; border: 1px dashed #e5e7eb; border-radius: 12px; background: #f9fafb; display: flex; align-items: center; gap: 10px;">
+              <i data-lucide="file-question" style="width: 24px; height: 24px; color: #d1d5db;"></i>
+              <p style="color: #9ca3af; margin: 0; font-size: 0.95rem;">Aucun exercice pour le moment.</p>
+            </div>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="resource-block">
+        <h3>Solutions</h3>
+        <div class="resource-list">
+          <% (files || []).filter(f => f.category === 'solution').forEach(f => { %>
+            <a class="resource-item" href="/files/<%= f.id %>">
+              <span class="resource-name"><%= f.original_name %></span>
+              <span class="resource-meta">PDF</span>
+            </a>
+          <% }) %>
+          <% if (!(files || []).some(f => f.category === 'solution')) { %>
+            <div style="padding: 1rem; border: 1px dashed #e5e7eb; border-radius: 12px; background: #f9fafb; display: flex; align-items: center; gap: 10px;">
+              <i data-lucide="file-question" style="width: 24px; height: 24px; color: #d1d5db;"></i>
+              <p style="color: #9ca3af; margin: 0; font-size: 0.95rem;">Aucune solution pour le moment.</p>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta card">
+  <h3>Bloqué sur cette leçon ?</h3>
+  <p class="muted">
+    Envoie-moi un message WhatsApp (leçon + chapitre déjà inclus) et je te guide rapidement.
+  </p>
+
+  <div class="cta-row">
+    <a class="btn btn-primary" href="<%= whatsappLink %>" target="_blank" rel="noopener">
+      💬 WhatsApp — Aide sur cette leçon
+    </a>
+    <a class="btn btn-secondary" href="/professeur">
+      Voir le professeur
+    </a>
+  </div>
+
+  <details class="msg-details">
+    <summary>Voir le message envoyé</summary>
+    <pre class="msg-box"><%= whatsappTextDisplay %></pre>
+  </details>
+</section>
+
+    <nav class="lesson-nav">
+      <div>
+        <% if (prevLesson) { %>
+          <a class="nav-btn" href="/lesson/<%= prevLesson.id %>">← Leçon précédente</a>
+        <% } %>
+      </div>
+      <div>
+        <% if (nextLesson) { %>
+          <a class="nav-btn" href="/lesson/<%= nextLesson.id %>">Leçon suivante →</a>
+        <% } %>
+      </div>
+    </nav>
+    <a class="sticky-wa"
+   href="<%= whatsappLink %>"
+   target="_blank" rel="noopener">
+  💬 WhatsApp — Aide sur cette leçon
+   </a>
+  </section>
+</div>

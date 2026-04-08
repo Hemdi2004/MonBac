@@ -1,0 +1,36 @@
+<div class="page-head">
+  <div>
+    <h1>Modifier chapitre</h1>
+    <p class="muted">Cours : <strong><%= chapter.course_title %></strong></p>
+  </div>
+
+  <div class="cta-row" style="margin:0;">
+    <a class="btn btn-secondary" href="/admin/courses/<%= chapter.course_id %>/chapters">← Retour</a>
+  </div>
+</div>
+
+<% if (error) { %>
+  <div class="card" style="border-color:#fecaca; background:#fff1f2;">
+    <p style="margin:0; font-weight:900;">Erreur</p>
+    <p class="muted" style="margin:6px 0 0;"><%= error %></p>
+  </div>
+<% } %>
+
+<section class="card">
+  <form method="POST" action="/admin/chapters/<%= chapter.id %>/edit" class="form">
+    <div class="field">
+      <label for="title">Titre</label>
+      <input id="title" name="title" required value="<%= chapter.title %>">
+    </div>
+
+    <div class="field">
+      <label for="position">Position (ordre)</label>
+      <input id="position" name="position" type="number" value="<%= chapter.position %>">
+    </div>
+
+    <div class="cta-row">
+      <button class="btn btn-primary" type="submit">Enregistrer</button>
+      <a class="btn btn-secondary" href="/admin/courses/<%= chapter.course_id %>/chapters">Annuler</a>
+    </div>
+  </form>
+</section>

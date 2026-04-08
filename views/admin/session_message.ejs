@@ -1,0 +1,22 @@
+<h1>Message WhatsApp — Session</h1>
+
+<textarea rows="14" style="width:100%; padding:12px;">
+📌 *Session de révision* — <%= group.name %>
+
+🗓 Date : <%= session.session_date %>
+⏰ Heure : <%= session.session_time %>
+
+📚 Programme : <%= program.title %>
+🎯 Sujet : <%= session.title %>
+
+<% if (session.meeting_link) { %>🔗 Lien : <%= session.meeting_link %><% } %>
+
+✅ À préparer :
+- Relire la leçon correspondante sur MonBac
+- Faire les exercices (si disponibles)
+
+⚠️ Soyez ponctuels. Merci.
+</textarea>
+
+<p>Copiez ce texte et envoyez-le dans le groupe WhatsApp.</p>
+<p><a href="/admin/programs/<%= program.id %>/sessions">Retour</a></p>

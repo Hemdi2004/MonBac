@@ -1,0 +1,104 @@
+<div class="page-head">
+  <div>
+    <h1>Ressources de la leçon</h1>
+    <p class="muted">
+      Cours : <strong><%= lesson.course_title %></strong> ·
+      Chapitre : <strong><%= lesson.chapter_title %></strong> ·
+      Leçon : <strong><%= lesson.title %></strong>
+    </p>
+  </div>
+
+  <div class="cta-row" style="margin:0;">
+    <a class="btn btn-secondary" href="/admin/chapters/<%= lesson.chapter_id %>/lessons">
+      ← Retour aux leçons
+    </a>
+  </div>
+</div>
+
+<section class="card">
+  <h2>Ajouter une ressource</h2>
+
+  <form method="POST"
+        action="/admin/lessons/<%= lesson.id %>/upload"
+        enctype="multipart/form-data"
+        class="form">
+
+    <div class="field">
+      <label for="pdf">Fichier</label>
+      <input id="pdf"
+             type="file"
+             name="pdf"
+             accept="application/pdf,image/*"
+             required />
+      <p class="muted">PDF ou image (scans, photos).</p>
+    </div>
+
+    <div class="field">
+      <label for="category">Catégorie</label>
+      <select id="category" name="category" required>
+        <option value="explanation">Explication</option>
+        <option value="exercise">Exercices</option>
+        <option value="solution">Solutions</option>
+        <option value="other">Autre</option>
+      </select>
+    </div>
+
+    <div class="cta-row">
+      <button class="btn btn-primary" type="submit">Uploader</button>
+    </div>
+  </form>
+</section>
+
+<section class="home-section">
+  <h2 class="section-title">Ressources existantes</h2>
+
+  <% if (!files || files.length === 0) { %>
+    <section class="card">
+      <p class="muted" style="margin:0;">Aucune ressource pour cette leçon.</p>
+    </section>
+  <% } else { %>
+    <section class="card">
+      <div class="table">
+        <div class="table-row table-head" style="grid-template-columns: 1.5fr 3fr 2fr;">
+          <div>Catégorie</div>
+          <div>Fichier</div>
+          <div style="text-align:right;">Actions</div>
+        </div>
+
+        <% files.forEach(f => { %>
+          <div class="table-row" style="grid-template-columns: 1.5fr 3fr 2fr;">
+            <div>
+              <span class="badge" style="margin:0;">
+                <%= f.category %>
+              </span>
+            </div>
+
+            <div>
+              <strong><%= f.original_name %></strong>
+            </div>
+
+            <div style="text-align:right;">
+              <div class="cta-row" style="justify-content:flex-end; margin:0;">
+                <a class="btn btn-secondary btn-sm"
+                   href="/files/<%= f.id %>"
+                   target="_blank"
+                   rel="noopener">
+                  Télécharger
+                </a>
+
+                <% if (typeof allowDelete !== "undefined" && allowDelete) { %>
+                  <form method="POST"
+                        action="/admin/files/<%= f.id %>/delete"
+                        class="inline"
+                        onsubmit="return confirm('Supprimer ce fichier ?');">
+                    <button class="btn btn-secondary btn-sm" type="submit">Delete</button>
+                  </form>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </section>
+  <% } %>
+</section>

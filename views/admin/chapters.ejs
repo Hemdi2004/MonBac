@@ -1,0 +1,76 @@
+<div class="page-head">
+  <div>
+    <h1>Chapitres — <%= course.title %></h1>
+    <p class="muted">Ajouter, organiser et gérer les chapitres de ce cours.</p>
+  </div>
+
+  <div class="cta-row" style="margin:0;">
+    <a class="btn btn-secondary" href="/admin/courses">← Retour aux cours</a>
+  </div>
+</div>
+
+<% if (error) { %>
+  <div class="card" style="border-color:#fecaca; background:#fff1f2;">
+    <p style="margin:0; font-weight:900;">Erreur</p>
+    <p class="muted" style="margin:6px 0 0;"><%= error %></p>
+  </div>
+<% } %>
+
+<section class="card">
+  <h2>Ajouter un chapitre</h2>
+
+  <form method="POST" action="/admin/courses/<%= course.id %>/chapters" class="form">
+    <div class="field">
+      <label for="title">Titre du chapitre</label>
+      <input id="title" name="title" required />
+    </div>
+
+    <div class="field">
+      <label for="position">Position (ordre)</label>
+      <input id="position" name="position" type="number" value="0" />
+      <p class="muted">0 = en haut si aucun autre ordre n’est défini.</p>
+    </div>
+
+    <div class="cta-row">
+      <button class="btn btn-primary" type="submit">Ajouter</button>
+    </div>
+  </form>
+</section>
+
+<section class="home-section">
+  <h2 class="section-title">Chapitres</h2>
+
+  <% if (!chapters || chapters.length === 0) { %>
+    <section class="card">
+      <p class="muted" style="margin:0;">Aucun chapitre pour le moment.</p>
+    </section>
+  <% } else { %>
+    <section class="card">
+      <div class="table">
+        <div class="table-row table-head" style="grid-template-columns: 1fr 3fr 2fr;">
+          <div>Ordre</div>
+          <div>Chapitre</div>
+          <div style="text-align:right;">Actions</div>
+        </div>
+
+        <% chapters.forEach(ch => { %>
+          <div class="table-row" style="grid-template-columns: 1fr 3fr 2fr;">
+            <div class="muted"><strong><%= ch.position %></strong></div>
+            <div><strong><%= ch.title %></strong></div>
+
+            <div style="text-align:right;">
+              <div class="cta-row" style="justify-content:flex-end; margin:0;">
+                <a class="btn btn-secondary btn-sm" href="/admin/chapters/<%= ch.id %>/lessons">Leçons</a>
+                <a class="btn btn-secondary btn-sm" href="/admin/chapters/<%= ch.id %>/edit">Edit</a>
+                <form method="POST" action="/admin/chapters/<%= ch.id %>/delete" class="inline"
+                      onsubmit="return confirm('Supprimer ce chapitre ? Les leçons liées peuvent être affectées.');">
+                  <button class="btn btn-secondary btn-sm" type="submit">Delete</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </section>
+  <% } %>
+</section>

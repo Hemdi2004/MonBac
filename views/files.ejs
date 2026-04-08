@@ -1,0 +1,17 @@
+<h1>Files for <%= course.title %></h1>
+
+<form method="POST" action="/admin/courses/<%= course.id %>/upload" enctype="multipart/form-data">
+  <input type="file" name="pdf" accept="application/pdf" required />
+  <button>Upload PDF</button>
+</form>
+
+<ul>
+  <% files.forEach(f => { %>
+    <li>
+      <%= f.original_name %>
+      <a href="/files/<%= f.id %>">Download</a>
+    </li>
+  <% }) %>
+</ul>
+
+<a href="/admin/courses">Back to courses</a>

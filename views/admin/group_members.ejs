@@ -1,0 +1,47 @@
+<div class="page-head">
+  <div>
+    <h1>Membres — <%= group.name %></h1>
+    <p class="muted">Gérez les élèves de ce groupe (modifier / retirer).</p>
+  </div>
+  <a class="btn btn-secondary" href="/admin/groups">← Retour aux groupes</a>
+</div>
+
+<% if (!members || members.length === 0) { %>
+  <section class="card">
+    <p class="muted" style="margin:0;">Aucun membre dans ce groupe pour le moment.</p>
+  </section>
+<% } else { %>
+  <section class="card">
+    <div class="table">
+      <div class="table-row table-head">
+        <div>Élève</div>
+        <div>Niveau</div>
+        <div>WhatsApp</div>
+        <div style="text-align:right;">Actions</div>
+      </div>
+
+      <% members.forEach(m => { %>
+        <div class="table-row">
+          <div>
+            <strong><%= m.name %></strong>
+          </div>
+          <div class="muted"><%= m.level %></div>
+          <div class="muted"><%= m.whatsapp %></div>
+
+          <div style="text-align:right;">
+            <div class="cta-row" style="justify-content:flex-end; margin:0;">
+              <a class="btn btn-secondary btn-sm" href="/admin/members/<%= m.id %>/edit">Modifier</a>
+
+              <form method="POST"
+                    action="/admin/groups/<%= group.id %>/members/<%= m.id %>/remove"
+                    onsubmit="return confirm('Retirer cet élève du groupe ?');"
+                    class="inline">
+                <button type="submit" class="btn btn-secondary btn-sm">Retirer</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </section>
+<% } %>

@@ -1,0 +1,144 @@
+<%
+  const PHONE_TEL = "212 665 708 404"; // digits only, no +, no spaces
+  const PHONE_DISPLAY = "+212 665 708 404"; // formatted for display
+  const WHATSAPP_NUMBER = "212 676 567 566"; // digits only, no +
+  const WHATSAPP_TEXT = encodeURIComponent("Bonjour Professeur, je souhaite un accompagnement en mathématiques.\nNiveau: ...\nVille: ...\nObjectif: ...\nChapitre(s): ...");
+%>
+
+
+<section class="teacher-hero card">
+  <div class="teacher-hero__left">
+  <p class="badge"><%= __("prof_badge") %></p>
+
+  <h1>
+    <%- __("prof_title") %>
+  </h1>
+
+  <p class="lead">
+    <%- __("prof_lead") %>
+  </p>
+
+  <div class="cta-row">
+    <a class="btn btn-primary"
+       href="<%= whatsappLink %>"
+       target="_blank" rel="noopener">
+      <%- __("prof_wa") %>
+    </a>
+
+    <a class="btn btn-secondary" href="tel:+<%= PHONE_TEL %>">
+      <%- __("prof_call") %>
+    </a>
+  </div>
+</div>
+
+
+<div class="teacher-hero__right">
+  <div class="teacher-card">
+    <img
+      src="/public/images/professeur.jpg"
+      alt="Professeur de mathématiques"
+      class="teacher-photo"
+    />
+<div class="teacher-identity">
+  <p class="teacher-name"><%- __("prof_name") %></p>
+
+  <p class="teacher-description">
+    <%- __("prof_desc") %>
+  </p>
+</div>
+</div>
+  </div>
+</div>
+
+</section>
+
+<section class="center-location card">
+  <div class="center-content">
+    <p class="badge"><%- __("prof_center_badge") %></p>
+    <h2><%- __("prof_center_title") %></h2>
+    <p class="lead">
+      <%- __("prof_center_lead") %>
+    </p>
+    
+    <ul class="location-details">
+      <li><i data-lucide="map-pin"></i> <%- __("prof_center_li1") %></li>
+      <li><i data-lucide="clock"></i> <%- __("prof_center_li2") %></li>
+      <li><i data-lucide="users"></i> <%- __("prof_center_li3") %></li>
+    </ul>
+
+    <div class="cta-row">
+      <a class="btn btn-secondary" href="https://www.google.com/maps/@35.7675765,-5.853327,1346m/data=!3m1!1e3?entry=ttu&g_ep=EgoyMDI2MDIwNC4wIKXMDSoASAFQAw%3D%3D" target="_blank">
+        <%- __("prof_center_btn") %>
+      </a>
+    </div>
+  </div>
+
+  <div class="center-image">
+    <img src="/public/images/prof.jpeg" alt="Centre de soutien MonBac Tanger" />
+    
+  </div>
+</section>
+
+<section class="grid">
+  <article class="card">
+    <h2><%- __("prof_for_who") %></h2>
+    <ul class="list">
+      <li><%- __("prof_for_2bac") %></li>
+      <li><%- __("prof_for_1bac") %></li>
+      <li><%- __("prof_for_college") %></li>
+    </ul>
+    <p class="muted"><%- __("prof_for_muted") %></p>
+  </article>
+
+  <article class="card">
+    <h2><%- __("prof_what") %></h2>
+    <ul class="list">
+      <li><%- __("prof_what_1") %></li>
+      <li><%- __("prof_what_2") %></li>
+      <li><%- __("prof_what_3") %></li>
+      <li><%- __("prof_what_4") %></li>
+    </ul>
+  </article>
+
+  <article class="card">
+    <h2><%- __("prof_formula") %></h2>
+    <ul class="list">
+      <li><%- __("prof_formula_1") %></li>
+      <li><%- __("prof_formula_2") %></li>
+      <li><%- __("prof_formula_3") %></li>
+    </ul>
+    <p class="muted"><%- __("prof_formula_muted") %></p>
+  </article>
+</section>
+
+<section class="card">
+  <h2><%- __("prof_how") %></h2>
+  <ol class="steps">
+    <li><%- __("prof_how_1") %></li>
+    <li><%- __("prof_how_2") %></li>
+    <li><%- __("prof_how_3") %></li>
+    <li><%- __("prof_how_4") %></li>
+  </ol>
+
+  <div class="cta-box">
+    <div>
+      <h3><%- __("prof_ready") %></h3>
+      <p class="muted"><%- __("prof_ready_muted") %></p>
+    </div>
+    <a class="btn btn-primary"
+       href="<%= whatsappLink %>"
+       target="_blank" rel="noopener">
+      <%- __("prof_wa") %>
+    </a>
+  </div>
+
+  <!-- <p class="muted">
+    📞 Téléphone : <strong><%= PHONE_DISPLAY %></strong>
+  </p> -->
+</section>
+
+    <a class="sticky-wa"
+       href="<%= whatsappLink %>"
+       target="_blank" rel="noopener">
+      <%- __("prof_wa_quick") %>
+    </a>

@@ -1,0 +1,64 @@
+<div class="page-head">
+  <div>
+    <h1>Cours</h1>
+    <p class="muted">Créer, publier, organiser les chapitres et gérer les cours.</p>
+  </div>
+
+  <div class="cta-row" style="margin:0;">
+    <a class="btn btn-primary" href="/admin/courses/new">+ Nouveau cours</a>
+    <a class="btn btn-secondary" href="/admin">← Dashboard</a>
+  </div>
+</div>
+
+<section class="card">
+  <h2>Liste des cours</h2>
+
+  <% if (!courses || courses.length === 0) { %>
+    <p class="muted" style="margin:0;">Aucun cours pour le moment.</p>
+  <% } else { %>
+    <div class="table">
+      <div class="table-row table-head" style="grid-template-columns: 2fr 1fr 2fr;">
+        <div>Cours</div>
+        <div>Status</div>
+        <div style="text-align:right;">Actions</div>
+      </div>
+
+      <% courses.forEach(c => { %>
+        <div class="table-row" style="grid-template-columns: 2fr 1fr 2fr;">
+          <div>
+            <strong><%= c.title %></strong>
+            <% if (c.description) { %>
+              <div class="muted"><%= c.description %></div>
+            <% } %>
+          </div>
+
+          <div>
+            <% if (c.is_published) { %>
+              <span class="badge" style="margin:0; background:#ecfdf5; color:#065f46;">PUBLISHED</span>
+            <% } else { %>
+              <span class="badge" style="margin:0; background:#fff7ed; color:#9a3412;">DRAFT</span>
+            <% } %>
+          </div>
+
+          <div style="text-align:right;">
+            <div class="cta-row" style="justify-content:flex-end; margin:0;">
+              <form method="POST" action="/admin/courses/<%= c.id %>/toggle" class="inline">
+                <button class="btn btn-secondary btn-sm" type="submit">
+                  <%= c.is_published ? "Unpublish" : "Publish" %>
+                </button>
+              </form>
+
+              <a class="btn btn-secondary btn-sm" href="/admin/courses/<%= c.id %>/chapters">Chapters</a>
+              <a class="btn btn-secondary btn-sm" href="/admin/courses/<%= c.id %>/edit">Edit</a>
+
+              <form method="POST" action="/admin/courses/<%= c.id %>/delete" class="inline"
+                    onsubmit="return confirm('Supprimer ce cours ? (Chapitres et leçons liés peuvent être affectés)');">
+                <button class="btn btn-secondary btn-sm" type="submit">Delete</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</section>

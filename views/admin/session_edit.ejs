@@ -1,0 +1,57 @@
+<div class="page-head">
+  <div>
+    <h1>Modifier session</h1>
+    <p class="muted">Mettre à jour groupe, date, heure, lien, notes.</p>
+  </div>
+  <a class="btn btn-secondary" href="javascript:history.back()">← Retour</a>
+</div>
+
+<% if (error) { %>
+  <div class="alert alert-error"><%= error %></div>
+<% } %>
+
+<section class="card">
+  <form method="POST" action="/admin/sessions/<%= session.id %>/edit" class="form">
+
+    <div class="field">
+      <label for="group_id">Groupe</label>
+      <select id="group_id" name="group_id" required>
+        <% (groups || []).forEach(g => { %>
+          <option value="<%= g.id %>" <%= Number(g.id) === Number(session.group_id) ? "selected" : "" %>>
+            <%= g.level %> — <%= g.name %>
+          </option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="title">Titre</label>
+      <input id="title" name="title" required value="<%= session.title %>">
+    </div>
+
+    <div class="field">
+      <label for="session_date">Date</label>
+      <input id="session_date" name="session_date" type="date" required value="<%= session.session_date %>">
+    </div>
+
+    <div class="field">
+      <label for="session_time">Heure</label>
+      <input id="session_time" name="session_time" type="time" required value="<%= session.session_time %>">
+    </div>
+
+    <div class="field">
+      <label for="meeting_link">Lien meeting</label>
+      <input id="meeting_link" name="meeting_link" type="url" value="<%= session.meeting_link || "" %>">
+    </div>
+
+    <div class="field">
+      <label for="notes">Notes</label>
+      <textarea id="notes" name="notes" rows="5"><%= session.notes || "" %></textarea>
+    </div>
+
+    <div class="cta-row">
+      <button class="btn btn-primary" type="submit">Enregistrer</button>
+      <a class="btn btn-secondary" href="javascript:history.back()">Annuler</a>
+    </div>
+  </form>
+</section>

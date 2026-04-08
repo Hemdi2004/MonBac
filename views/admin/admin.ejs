@@ -1,0 +1,59 @@
+<div class="page-head">
+  <div>
+    <h1><%- __("admin_title") %></h1>
+    <p class="muted"><%- __("admin_connected") %><strong><%= user.email %></strong></p>
+  </div>
+
+  <form method="POST" action="/logout" class="inline">
+    <button class="btn btn-secondary" type="submit"><%- __("admin_logout") %></button>
+  </form>
+</div>
+
+<section class="grid">
+  <article class="card">
+    <h2><%- __("admin_courses_t") %></h2>
+    <p class="muted"><%- __("admin_courses_p") %></p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="/admin/courses"><%- __("admin_courses_btn") %></a>
+    </div>
+  </article>
+
+  <article class="card">
+    <h2><%- __("admin_comm_t") %></h2>
+    <p class="muted"><%- __("admin_comm_p") %></p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="/admin/community"><%- __("admin_comm_btn") %></a>
+    </div>
+  </article>
+
+  <article class="card">
+    <h2><%- __("admin_groups_t") %></h2>
+    <p class="muted"><%- __("admin_groups_p") %></p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="/admin/groups"><%- __("admin_groups_btn") %></a>
+    </div>
+  </article>
+
+  <article class="card">
+    <h2><%- __("admin_assign_t") %></h2>
+    <p class="muted"><%- __("admin_assign_p") %></p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="/admin/assign"><%- __("admin_assign_btn") %></a>
+    </div>
+  </article>
+
+  <article class="card">
+    <h2><%- __("admin_prog_t") %></h2>
+    <p class="muted"><%- __("admin_prog_p") %></p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="/admin/programs"><%- __("admin_prog_btn") %></a>
+    </div>
+  </article>
+</section>
+
+<section class="card">
+  <h2><%- __("admin_tips_t") %></h2>
+  <p class="muted" style="margin:0;">
+    <%- __("admin_tips_p") %>
+  </p>
+</section>

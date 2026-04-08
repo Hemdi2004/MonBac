@@ -1,0 +1,93 @@
+<div class="page-head">
+  <div>
+    <h1>Sessions — <%= program.title %></h1>
+    <p class="muted">Créer et gérer les séances pour ce programme.</p>
+  </div>
+  <a class="btn btn-secondary" href="/admin/programs">← Retour programmes</a>
+</div>
+
+<section class="card">
+  <h2>Créer une session</h2>
+
+  <form method="POST" action="/admin/programs/<%= program.id %>/sessions" class="form">
+    <div class="field">
+      <label for="group_id">Groupe</label>
+      <select id="group_id" name="group_id" required>
+        <% (groups || []).forEach(g => { %>
+          <option value="<%= g.id %>"><%= g.level %> — <%= g.name %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="title">Titre</label>
+      <input id="title" name="title" required>
+    </div>
+
+    <div class="field">
+      <label for="session_date">Date</label>
+      <input id="session_date" name="session_date" type="date" required>
+    </div>
+
+    <div class="field">
+      <label for="session_time">Heure</label>
+      <input id="session_time" name="session_time" type="time" required>
+    </div>
+
+    <div class="field">
+      <label for="meeting_link">Lien meeting (optionnel)</label>
+      <input id="meeting_link" name="meeting_link" type="url" placeholder="https://...">
+    </div>
+
+    <div class="field">
+      <label for="notes">Notes (optionnel)</label>
+      <textarea id="notes" name="notes" rows="4"></textarea>
+    </div>
+
+    <div class="cta-row">
+      <button class="btn btn-primary" type="submit">Ajouter session</button>
+    </div>
+  </form>
+</section>
+
+<section class="home-section">
+  <h2 class="section-title">Sessions</h2>
+
+  <% if (!sessions || sessions.length === 0) { %>
+    <p class="muted">Aucune session pour le moment.</p>
+  <% } else { %>
+    <div class="admin-list">
+      <% sessions.forEach(s => { %>
+        <article class="card admin-item">
+          <div class="admin-item-top">
+            <div>
+              <h3 class="admin-title"><%= s.title %></h3>
+              <p class="muted">
+                Groupe : <strong><%= s.group_name || "—" %></strong><br>
+                Date : <strong><%= s.session_date %></strong> · Heure : <strong><%= s.session_time %></strong>
+              </p>
+
+              <% if (s.meeting_link) { %>
+                <p class="muted">
+                  Lien : <a href="<%= s.meeting_link %>" target="_blank" rel="noopener"><%= s.meeting_link %></a>
+                </p>
+              <% } %>
+
+              <% if (s.notes) { %>
+                <p class="muted"><%= s.notes %></p>
+              <% } %>
+            </div>
+
+            <div class="admin-actions">
+              <a class="btn btn-secondary btn-sm" href="/admin/sessions/<%= s.id %>/edit">Edit</a>
+              <form method="POST" action="/admin/sessions/<%= s.id %>/delete" class="inline"
+                    onsubmit="return confirm('Supprimer cette session ?');">
+                <button class="btn btn-secondary btn-sm" type="submit">Delete</button>
+              </form>
+            </div>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+  <% } %>
+</section>

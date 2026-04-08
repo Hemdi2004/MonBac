@@ -1,0 +1,109 @@
+<section class="home-hero" style="text-align: center; padding: 4rem 1rem; background: linear-gradient(135deg, #eef2ff 0%, #f9fafb 100%); border-radius: 24px; margin-bottom: 3rem; margin-top: 1rem; border: 1px solid #e5e7eb; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
+  <div style="max-width: 650px; margin: 0 auto;">
+    <h1 style="font-size: 2.8rem; font-weight: 800; color: #111827; margin-bottom: 1rem; line-height: 1.2;">
+      <%= __("hero_title_1") %> <span style="color: #4f46e5;"><%= __("hero_title_2") %></span>
+    </h1>
+    <p style="font-size: 1.15rem; color: #4b5563; margin-bottom: 2rem; line-height: 1.6;">
+      <%= __("hero_desc") %>
+    </p>
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+      <a href="#courses" class="btn btn-primary" style="font-size: 1.05rem; padding: 0.8rem 1.8rem; border-radius: 999px; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);">
+        <i data-lucide="book-open"></i> <%= __("hero_btn_courses") %>
+      </a>
+      <a href="/communaute" class="btn btn-secondary" style="font-size: 1.05rem; padding: 0.8rem 1.8rem; border-radius: 999px;">
+        <i data-lucide="users"></i> <%= __("hero_btn_community") %>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="courses" class="home-section">
+  <h2 class="section-title"><%= __("home_courses_title") %></h2>
+
+  <div class="tabs">
+    <button class="tab-btn active" type="button" data-tab="2bac"><%= __("tab_2bac") %></button>
+    <button class="tab-btn" type="button" data-tab="1bac"><%= __("tab_1bac") %></button>
+    <button class="tab-btn" type="button" data-tab="college"><%= __("tab_college") %></button>
+  </div>
+
+  <div class="tab-panels">
+    <div class="tab-panel active" data-panel="2bac">
+      <% const list2 = (groupedCourses && groupedCourses["2bac"]) || []; %>
+      <% if (list2.length === 0) { %>
+        <div style="text-align: center; padding: 3rem 1rem; border: 2px dashed #e5e7eb; border-radius: 16px; background: #fafafa; margin-top: 1rem;">
+          <i data-lucide="folder-open" style="width: 48px; height: 48px; color: #9ca3af; margin-bottom: 1rem;"></i>
+          <h3 style="font-size: 1.2rem; color: #4b5563; margin: 0 0 0.5rem 0;"><%= __("empty_course_title") %></h3>
+          <p style="color: #9ca3af; margin: 0;"><%= __("empty_course_desc") %></p>
+        </div>
+      <% } else { %>
+        <ul class="course-grid">
+          <% list2.forEach(c => { %>
+            <li class="course-card">
+              <h3 class="course-title"><a href="/course/<%= c.slug %>"><%= c.title %></a></h3>
+              <% if (c.description) { %><p class="muted"><%= c.description %></p><% } %>
+              <a class="course-link" href="/course/<%= c.slug %>"><%= __("btn_access_course") %></a>
+            </li>
+          <% }) %>
+        </ul>
+      <% } %>
+    </div>
+
+    <div class="tab-panel" data-panel="1bac">
+      <% const list1 = (groupedCourses && groupedCourses["1bac"]) || []; %>
+      <% if (list1.length === 0) { %>
+        <div style="text-align: center; padding: 3rem 1rem; border: 2px dashed #e5e7eb; border-radius: 16px; background: #fafafa; margin-top: 1rem;">
+          <i data-lucide="folder-open" style="width: 48px; height: 48px; color: #9ca3af; margin-bottom: 1rem;"></i>
+          <h3 style="font-size: 1.2rem; color: #4b5563; margin: 0 0 0.5rem 0;"><%= __("empty_course_title") %></h3>
+          <p style="color: #9ca3af; margin: 0;"><%= __("empty_course_desc") %></p>
+        </div>
+      <% } else { %>
+        <ul class="course-grid">
+          <% list1.forEach(c => { %>
+            <li class="course-card">
+              <h3 class="course-title"><a href="/course/<%= c.slug %>"><%= c.title %></a></h3>
+              <% if (c.description) { %><p class="muted"><%= c.description %></p><% } %>
+              <a class="course-link" href="/course/<%= c.slug %>"><%= __("btn_access_course") %></a>
+            </li>
+          <% }) %>
+        </ul>
+      <% } %>
+    </div>
+
+    <div class="tab-panel" data-panel="college">
+      <% const listC = (groupedCourses && groupedCourses["college"]) || []; %>
+      <% if (listC.length === 0) { %>
+        <div style="text-align: center; padding: 3rem 1rem; border: 2px dashed #e5e7eb; border-radius: 16px; background: #fafafa; margin-top: 1rem;">
+          <i data-lucide="folder-open" style="width: 48px; height: 48px; color: #9ca3af; margin-bottom: 1rem;"></i>
+          <h3 style="font-size: 1.2rem; color: #4b5563; margin: 0 0 0.5rem 0;"><%= __("empty_course_title") %></h3>
+          <p style="color: #9ca3af; margin: 0;"><%= __("empty_course_desc") %></p>
+        </div>
+      <% } else { %>
+        <ul class="course-grid">
+          <% listC.forEach(c => { %>
+            <li class="course-card">
+              <h3 class="course-title"><a href="/course/<%= c.slug %>"><%= c.title %></a></h3>
+              <% if (c.description) { %><p class="muted"><%= c.description %></p><% } %>
+              <a class="course-link" href="/course/<%= c.slug %>"><%= __("btn_access_course") %></a>
+            </li>
+          <% }) %>
+        </ul>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function(){
+    const btns = document.querySelectorAll(".tab-btn");
+    const panels = document.querySelectorAll(".tab-panel");
+
+    btns.forEach(b => {
+      b.addEventListener("click", () => {
+        const tab = b.dataset.tab;
+
+        btns.forEach(x => x.classList.toggle("active", x === b));
+        panels.forEach(p => p.classList.toggle("active", p.dataset.panel === tab));
+      });
+    });
+  })();
+</script>

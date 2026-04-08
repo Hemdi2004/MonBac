@@ -1,0 +1,41 @@
+<h1><%- __("g_schedule_title") %><%= group.name %></h1>
+
+<p>
+  <%- __("g_schedule_level") %><strong><%= group.level %></strong><%- __("g_schedule_type") %><strong><%= group.type %></strong>
+</p>
+
+<section style="background:#fff; padding:20px; border-radius:8px; margin-top:15px;">
+  <% if (!sessions || sessions.length === 0) { %>
+    <p><%- __("g_schedule_empty") %></p>
+  <% } else { %>
+    <table border="1" cellpadding="8" cellspacing="0">
+      <tr>
+        <th><%- __("g_schedule_th_prog") %></th>
+        <th><%- __("g_schedule_th_date") %></th>
+        <th><%- __("g_schedule_th_time") %></th>
+        <th><%- __("g_schedule_th_title") %></th>
+        <th><%- __("g_schedule_th_link") %></th>
+      </tr>
+
+      <% sessions.forEach(s => { %>
+        <tr>
+          <td><%= s.program_title %></td>
+          <td><%= s.session_date %></td>
+          <td><%= s.session_time %></td>
+          <td><%= s.title %></td>
+          <td>
+            <% if (s.meeting_link) { %>
+              <a href="<%= s.meeting_link %>" target="_blank"><%- __("g_schedule_open") %></a>
+            <% } else { %>
+              —
+            <% } %>
+          </td>
+        </tr>
+      <% }) %>
+    </table>
+  <% } %>
+</section>
+
+<p style="margin-top:15px;">
+  <a href="/emploi-du-temps"><%- __("g_schedule_back") %></a>
+</p>

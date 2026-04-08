@@ -1,0 +1,45 @@
+<div class="page-head">
+  <div>
+    <h1>Edit course</h1>
+    <p class="muted">Modify course info and level.</p>
+  </div>
+  <a class="btn btn-secondary" href="/admin/courses">← Back</a>
+</div>
+
+<% if (error) { %>
+  <div class="alert alert-error"><%= error %></div>
+<% } %>
+
+<section class="card">
+  <form method="POST" action="/admin/courses/<%= course.id %>/edit" class="form">
+
+    <div class="field">
+      <label for="title">Title</label>
+      <input id="title" name="title" required value="<%= course.title %>">
+    </div>
+
+    <div class="field">
+      <label for="slug">Slug</label>
+      <input id="slug" name="slug" required value="<%= course.slug %>">
+    </div>
+
+    <div class="field">
+      <label for="level">Niveau</label>
+      <select id="level" name="level" required>
+        <option value="2bac" <%= course.level === "2bac" ? "selected" : "" %>>2ème année Bac</option>
+        <option value="1bac" <%= course.level === "1bac" ? "selected" : "" %>>1ère année Bac</option>
+        <option value="college" <%= course.level === "college" ? "selected" : "" %>>Collège</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="description">Description</label>
+      <textarea id="description" name="description" rows="4"><%= course.description || "" %></textarea>
+    </div>
+
+    <div class="cta-row">
+      <button class="btn btn-primary" type="submit">Save</button>
+      <a class="btn btn-secondary" href="/admin/courses">Cancel</a>
+    </div>
+  </form>
+</section>

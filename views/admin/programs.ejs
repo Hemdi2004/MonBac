@@ -1,0 +1,77 @@
+<% if (error) { %>
+  <div class="card" style="border-color:#fecaca; background:#fff1f2;">
+    <p style="margin:0; font-weight:800;">Erreur</p>
+    <p class="muted" style="margin:6px 0 0;"><%= error %></p>
+  </div>
+<% } %>
+
+<div class="page-head">
+  <div>
+    <h1>Programmes</h1>
+    <p class="muted">Créer, modifier et gérer les programmes de la communauté.</p>
+  </div>
+  <a class="btn btn-secondary" href="javascript:history.back()">← Retour</a>
+</div>
+
+<section class="card">
+  <h2>Créer un programme</h2>
+
+  <form method="POST" action="/admin/programs" class="form">
+    <div class="field">
+      <label for="title">Titre</label>
+      <input id="title" name="title" required>
+    </div>
+
+    <div class="field">
+      <label for="level">Niveau</label>
+      <select id="level" name="level" required>
+        <option value="2bac">2ème Bac</option>
+        <option value="1bac">1ère Bac</option>
+        <option value="college">Collège</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="description">Description (optionnel)</label>
+      <textarea id="description" name="description" rows="4"></textarea>
+    </div>
+
+    <div class="cta-row">
+      <button class="btn btn-primary" type="submit">Ajouter</button>
+    </div>
+  </form>
+</section>
+
+<section class="home-section">
+  <h2 class="section-title">Liste des programmes</h2>
+
+  <% if (!programs || programs.length === 0) { %>
+    <p class="muted">Aucun programme pour le moment.</p>
+  <% } else { %>
+    <div class="admin-list">
+      <% programs.forEach(p => { %>
+        <article class="card admin-item">
+          <div class="admin-item-top">
+            <div>
+              <h3 class="admin-title"><%= p.title %></h3>
+              <p class="muted">Niveau : <strong><%= p.level %></strong></p>
+              <% if (p.description) { %>
+                <p class="muted"><%= p.description %></p>
+              <% } %>
+            </div>
+
+            <div class="admin-actions">
+              <a class="btn btn-secondary btn-sm" href="/admin/programs/<%= p.id %>/sessions">Sessions</a>
+              <a class="btn btn-secondary btn-sm" href="/admin/programs/<%= p.id %>/edit">Edit</a>
+
+              <form method="POST" action="/admin/programs/<%= p.id %>/delete" class="inline"
+                    onsubmit="return confirm('Supprimer ce programme ?');">
+                <button class="btn btn-secondary btn-sm" type="submit">Delete</button>
+              </form>
+            </div>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+  <% } %>
+</section>
