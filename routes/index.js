@@ -15,5 +15,6 @@ router.use(require("./programs_admin"));
 router.use(require("./sessions_admin"));
 router.use(require("./seo"));
 router.use(require("./lang"));
+router.use(require("./ai_tutor")); // Added AI Tutor route
 
 module.exports = router;

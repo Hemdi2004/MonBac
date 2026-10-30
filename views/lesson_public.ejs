@@ -1,3 +1,103 @@
+<style>
+  /* AI Tutor Scoped Styles matching MonBac Design System */
+  .ai-tutor-container {
+    background-color: #F8FAFC;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  }
+  .ai-tutor-header {
+    color: #0F172A;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .ai-chat-window {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-inline-end: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .chat-bubble {
+    max-width: 85%;
+    padding: 1rem 1.25rem;
+    line-height: 1.5;
+    font-size: 0.95rem;
+  }
+  .bubble-student {
+    align-self: flex-end;
+    background-color: #2563EB;
+    color: #ffffff;
+    /* CSS Logical properties automatically flip for LTR/RTL */
+    border-start-end-radius: 16px;
+    border-start-start-radius: 16px;
+    border-end-start-radius: 16px;
+    border-end-end-radius: 4px;
+    margin-inline-start: auto;
+  }
+  .bubble-ai {
+    align-self: flex-start;
+    background-color: #ffffff;
+    color: #475569;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    border-start-end-radius: 16px;
+    border-start-start-radius: 16px;
+    border-end-end-radius: 16px;
+    border-end-start-radius: 4px;
+    margin-inline-end: auto;
+  }
+  .ai-input-wrapper {
+    display: flex;
+    gap: 0.75rem;
+  }
+  .ai-input-field {
+    flex-grow: 1;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 999px; /* Pill shape */
+    padding: 0.75rem 1.5rem;
+    color: #0F172A;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+  .ai-input-field:focus {
+    border-color: #2563EB;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+  .ai-btn-submit {
+    background-color: #2563EB;
+    color: #ffffff;
+    border: none;
+    border-radius: 999px;
+    padding: 0.75rem 1.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s;
+  }
+  .ai-btn-submit:hover {
+    background-color: #1d4ed8;
+  }
+  .ai-btn-submit:active {
+    transform: scale(0.97);
+  }
+  .ai-typing-indicator {
+    color: #9ca3af;
+    font-size: 0.85rem;
+    font-style: italic;
+    align-self: flex-start;
+    padding-inline-start: 1rem;
+  }
+</style>
+
 <nav class="breadcrumb">
   <a href="/">Accueil</a>
   <span class="sep">›</span>
@@ -163,7 +263,26 @@
         </div>
       </div>
     </section>
+<section class="ai-tutor-container card">
+  <div class="ai-tutor-header">
+    <span style="font-size: 1.5rem;">🤖</span> 
+    Assistant IA : <%= lesson.title %>
+  </div>
+  
+  <div id="ai-chat-window" class="ai-chat-window">
+    <div class="chat-bubble bubble-ai">
+      Bonjour ! Je suis l'assistant IA propulsé par <strong>NVIDIA Nemotron</strong>. As-tu une question sur le chapitre <em><%= lesson.chapter_title %></em> ?
+    </div>
+  </div>
 
+  <div class="ai-input-wrapper">
+    <!-- Secretly storing context to send to backend -->
+    <input type="hidden" id="lesson-context" value="Chapitre: <%= lesson.chapter_title %> | Leçon: <%= lesson.title %>">
+    
+    <input type="text" id="ai-input-field" class="ai-input-field" placeholder="Pose ta question ici..." onkeypress="if(event.key === 'Enter') submitAiQuestion()">
+    <button class="ai-btn-submit" onclick="submitAiQuestion()">Demander</button>
+  </div>
+</section>
     <section class="cta card">
   <h3>Bloqué sur cette leçon ?</h3>
   <p class="muted">
@@ -204,3 +323,54 @@
    </a>
   </section>
 </div>
+
+<script>
+  async function submitAiQuestion() {
+    const inputField = document.getElementById('ai-input-field');
+    const chatWindow = document.getElementById('ai-chat-window');
+    const lessonContext = document.getElementById('lesson-context').value;
+    
+    const question = inputField.value.trim();
+    if (!question) return;
+
+    // 1. Add Student Bubble
+    chatWindow.innerHTML += `<div class="chat-bubble bubble-student">${question}</div>`;
+    inputField.value = '';
+    
+    // 2. Add Loading Indicator
+    const loadingId = 'loading-' + Date.now();
+    chatWindow.innerHTML += `<div id="${loadingId}" class="ai-typing-indicator">L'IA réfléchit...</div>`;
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+
+    try {
+      // 3. Send Request to Express Backend
+      // We combine the context with the question so the AI knows what we are talking about
+      const enrichedQuestion = `[Contexte de la leçon: ${lessonContext}] Question de l'élève: ${question}`;
+
+      const response = await fetch('/ask-tutor', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ studentQuestion: enrichedQuestion })
+      });
+      
+      const data = await response.json();
+      document.getElementById(loadingId).remove();
+
+      if (data.answer) {
+        // Format basic markdown (bolding and line breaks)
+        let formattedAnswer = data.answer
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\n/g, '<br>');
+            
+        chatWindow.innerHTML += `<div class="chat-bubble bubble-ai">${formattedAnswer}</div>`;
+      } else {
+        chatWindow.innerHTML += `<div class="chat-bubble bubble-ai" style="color: #ef4444;">Erreur: ${data.error}</div>`;
+      }
+    } catch (error) {
+      document.getElementById(loadingId).remove();
+      chatWindow.innerHTML += `<div class="chat-bubble bubble-ai" style="color: #ef4444;">Erreur de connexion au serveur.</div>`;
+    }
+    
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  }
+</script>

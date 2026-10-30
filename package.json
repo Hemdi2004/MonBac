@@ -14,14 +14,15 @@
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
-    "dotenv": "^17.2.3",
+    "dotenv": "^17.4.2",
     "ejs": "^4.0.1",
     "express": "^5.2.1",
     "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.19.0",
     "i18n": "^0.15.3",
     "multer": "^2.0.2",
-    "mysql2": "^3.16.1"
+    "mysql2": "^3.16.1",
+    "openai": "^7.45.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.11"

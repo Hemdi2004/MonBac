@@ -10,6 +10,7 @@ const db = require("./db");
 const routes = require("./routes");
 
 const app = express();
+app.use(express.json());
 
 i18n.configure({
   locales: ['fr', 'ar'],
