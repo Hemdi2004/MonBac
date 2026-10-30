@@ -90,4 +90,3 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`[MonBac Engine] Server actively running on http://localhost:${PORT}`);
 });
-require('./create_admin.js');
