@@ -3,7 +3,9 @@
   <span class="sep">›</span>
   <span class="current"><%= course.title %></span>
 </nav>
+
 <a class="btn btn-secondary" href="javascript:history.back()">← Retour</a>
+
 <header class="course-hero card">
   <p class="badge">Bac Maroc</p>
   <h1 class="course-title"><%= course.title %></h1>
@@ -25,34 +27,36 @@
   <h2 class="section-title">Chapitres & Leçons</h2>
 
   <% if (!chapters || chapters.length === 0) { %>
-    <div style="text-align: center; padding: 4rem 1rem; border: 2px dashed #e5e7eb; border-radius: 16px; background: #fafafa; margin: 2rem 0;">
-      <i data-lucide="book-dashed" style="width: 56px; height: 56px; color: #9ca3af; margin-bottom: 1rem;"></i>
-      <h3 style="font-size: 1.3rem; color: #4b5563; margin: 0 0 0.5rem 0;">Aucun contenu pour le moment</h3>
-      <p style="color: #9ca3af; margin: 0; font-size: 1.05rem;">Ce cours vient d'être créé. Le professeur ajoute les chapitres bientôt !</p>
+    <!-- Clean, semantic empty state block utilizing component-level empty CSS classes -->
+    <div class="empty-state empty-state-dashed">
+      <i data-lucide="book-dashed" class="empty-state-icon"></i>
+      <h3 class="empty-state-heading">Aucun contenu pour le moment</h3>
+      <p class="empty-state-text">Ce cours vient d'être créé. Le professeur ajoute les chapitres bientôt !</p>
     </div>
   <% } else { %>
     <div class="chapters-grid">
-      <% (chapters || []).forEach(ch => { %>
+      <% chapters.forEach(chapter => { %>
         <article class="chapter card">
-          <h3 class="chapter-title"><%= ch.title %></h3>
+          <h3 class="chapter-title"><%= chapter.title %></h3>
 
           <ul class="lesson-list">
             <% 
-              const lessonList = (lessons || []).filter(ls => Number(ls.chapter_id) === Number(ch.id));
+              // Optimization: Pre-filtering lesson array directly with structured strict-type matching
+              const filteredLessons = (lessons || []).filter(lesson => String(lesson.chapter_id) === String(chapter.id));
             %>
 
-            <% if (lessonList.length === 0) { %>
-              <li style="text-align: center; padding: 2rem 1rem; border: 1px dashed #e5e7eb; border-radius: 12px; background: #f9fafb; list-style: none;">
-                 <i data-lucide="file-x" style="width: 32px; height: 32px; color: #d1d5db; margin-bottom: 0.5rem;"></i>
-                 <p style="color: #9ca3af; margin: 0; font-size: 0.95rem;">Les leçons de ce chapitre arrivent bientôt.</p>
+            <% if (filteredLessons.length === 0) { %>
+              <li class="empty-state-item text-center">
+                 <i data-lucide="file-x" class="empty-state-item-icon"></i>
+                 <p class="empty-state-item-text">Les leçons de ce chapitre arrivent bientôt.</p>
               </li>
             <% } else { %>
-              <% lessonList.forEach((ls, idx) => { %>
+              <% filteredLessons.forEach((lesson, index) => { %>
                 <li>
-                  <a class="lesson-link" href="/lesson/<%= ls.id %>">
+                  <a class="lesson-link" href="/lesson/<%= lesson.id %>">
                     <span class="lesson-left">
-                      <span class="lesson-num"><%= (ls.position ?? (idx + 1)) %></span>
-                      <span class="lesson-name"><%= ls.title %></span>
+                      <span class="lesson-num"><%= (lesson.position ?? (index + 1)) %></span>
+                      <span class="lesson-name"><%= lesson.title %></span>
                     </span>
                     <span class="lesson-arrow">→</span>
                   </a>

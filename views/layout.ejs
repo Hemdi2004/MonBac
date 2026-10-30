@@ -5,17 +5,19 @@
   <title><%= title || __("site_title") %></title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="<%= description || "Cours, exercices et corrigés pour le Bac au Maroc. Ressources gratuites, claires et orientées examens." %>">
+  <meta name="description" content="<%= description || __("site_description") || "Cours, exercices et corrigés pour le Bac au Maroc." %>">
+  
+  <!-- Open Graph Metadata -->
   <meta property="og:title" content="<%= title || 'MonBac' %>">
   <meta property="og:description" content="<%= description || '' %>">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://monbac.ma/public/images/og-preview.jpg">
+  
   <% if (canonical) { %>
-  <meta property="og:url" content="<%= canonical %>">
+    <meta property="og:url" content="<%= canonical %>">
+    <link rel="canonical" href="<%= canonical %>">
   <% } %>
-  <% if (canonical) { %>
-  <link rel="canonical" href="<%= canonical %>">
-  <% } %>
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/public/style.css">
 </head>
@@ -23,15 +25,16 @@
 
 <header class="site-header">
   <div class="container header-inner">
-<a href="/" class="logo-container">
-  <div class="logo-icon">
-    <i data-lucide="graduation-cap"></i>
-  </div>
-  <div class="logo-text">
-    MONBAC<span>.MA</span>
-  </div>
-</a>    <button class="nav-toggle" aria-label="Menu">
-  <img src="/public/images/more.png" alt="Menu" class="menu-icon">
+    <a href="/" class="logo-container">
+      <div class="logo-icon">
+        <i data-lucide="graduation-cap"></i>
+      </div>
+      <div class="logo-text">
+        MONBAC<span>.MA</span>
+      </div>
+    </a>    
+    <button class="nav-toggle" aria-label="Toggle Menu">
+      <img src="/public/images/more.png" alt="Menu" class="menu-icon">
     </button>
     <nav class="nav" id="main-nav">
       <a class="nav-link" href="/"><%= __("nav_courses") %></a>
@@ -40,9 +43,10 @@
       <a class="nav-link" href="/emploi-du-temps"><%= __("nav_schedule") %></a>
       
       <!-- Language Switcher -->
-      <div style="margin-inline-start: 10px; display: flex; gap: 8px; align-items: center;">
+      <div class="lang-switcher" style="margin-inline-start: 10px; display: flex; gap: 8px; align-items: center;">
         <a href="/lang/fr" style="text-decoration: none; font-weight: bold; background: <%= locale === 'fr' ? '#eef2ff' : 'transparent' %>; color: <%= locale === 'fr' ? '#1d4ed8' : 'var(--muted)' %>; padding: 4px 8px; border-radius: 6px;">Fr</a>
         <a href="/lang/ar" style="text-decoration: none; font-weight: bold; background: <%= locale === 'ar' ? '#eef2ff' : 'transparent' %>; color: <%= locale === 'ar' ? '#1d4ed8' : 'var(--muted)' %>; padding: 4px 8px; border-radius: 6px;">عربي</a>
+        <a href="/lang/en" style="text-decoration: none; font-weight: bold; background: <%= locale === 'en' ? '#eef2ff' : 'transparent' %>; color: <%= locale === 'en' ? '#1d4ed8' : 'var(--muted)' %>; padding: 4px 8px; border-radius: 6px;">En</a>
       </div>
     </nav>
   </div>
@@ -61,20 +65,31 @@
     </p>
   </div>
 </footer>
+
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
-  const toggle = document.querySelector('.nav-toggle');
-  const nav = document.getElementById('main-nav');
+  (() => {
+    const menuToggleBtn = document.querySelector('.nav-toggle');
+    const mainNavigation = document.getElementById('main-nav');
+    const navigationLinks = document.querySelectorAll('.nav-link');
 
-  toggle.addEventListener('click', () => {
-    nav.classList.toggle('open');
-  });
-  document.querySelectorAll('.nav-link').forEach(link => {
-  link.addEventListener('click', () => {
-    nav.classList.remove('open');
-  });
-});
-lucide.createIcons();
+    if (menuToggleBtn && mainNavigation) {
+      menuToggleBtn.addEventListener('click', () => {
+        mainNavigation.classList.toggle('open');
+      });
+
+      navigationLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          mainNavigation.classList.remove('open');
+        });
+      });
+    }
+    
+    // Initialize icons safely
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
+  })();
 </script>
 
 </body>

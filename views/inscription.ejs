@@ -1,33 +1,33 @@
 <h1>Inscription à la communauté</h1>
 
-<section style="background:#fff; padding:25px; border-radius:8px; margin-bottom:25px;">
+<section class="card form-info-section">
   <p>
     Cette plateforme permet aux élèves de rejoindre une communauté éducative
     encadrée, organisée et structurée pour la préparation scolaire et les examens.
   </p>
 </section>
 
-<section style="background:#fff; padding:25px; border-radius:8px;">
+<section class="card form-container-section">
   <h2>Formulaire de demande d’inscription</h2>
 
-  <form method="POST" action="/inscription">
-    <div style="margin-bottom:12px;">
-      <label>Nom complet</label><br>
-      <input type="text" name="name" required>
+  <form method="POST" action="/inscription" class="registration-form">
+    <div class="form-group">
+      <label for="name">Nom complet</label>
+      <input type="text" id="name" name="name" required class="form-control">
     </div>
 
-    <div style="margin-bottom:12px;">
-      <label>Niveau scolaire</label><br>
-      <select name="level" required>
+    <div class="form-group">
+      <label for="level">Niveau scolaire</label>
+      <select id="level" name="level" required class="form-control">
         <option value="">Choisir</option>
         <option value="1ere_bac">1ère année baccalauréat</option>
         <option value="2eme_bac">2ème année baccalauréat</option>
       </select>
     </div>
 
-    <div style="margin-bottom:12px;">
-      <label>Objectif</label><br>
-      <select name="objective" required>
+    <div class="form-group">
+      <label for="objective">Objectif</label>
+      <select id="objective" name="objective" required class="form-control">
         <option value="">Choisir</option>
         <option value="revision">Révision</option>
         <option value="preparation_exam">Préparation aux examens</option>
@@ -35,13 +35,12 @@
       </select>
     </div>
 
-    <div style="margin-bottom:12px;">
-      <label>Numéro WhatsApp</label><br>
-      <input type="text" name="whatsapp" required>
+    <div class="form-group">
+      <label for="whatsapp">Numéro WhatsApp</label>
+      <input type="tel" id="whatsapp" name="whatsapp" required class="form-control" placeholder="Ex: 0612345678">
     </div>
 
-    <button type="submit"
-      style="padding:10px 18px; background:#1e1e2f; color:white; border:none; border-radius:5px;">
+    <button type="submit" class="btn btn-submit">
       Envoyer la demande
     </button>
   </form>

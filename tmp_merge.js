@@ -1,11 +1,10 @@
 const fs = require('fs');
-const frPath = './locales/fr.json';
-const arPath = './locales/ar.json';
+const path = require('path');
 
-const frData = JSON.parse(fs.readFileSync(frPath));
-const arData = JSON.parse(fs.readFileSync(arPath));
+const frPath = path.resolve('./locales/fr.json');
+const arPath = path.resolve('./locales/ar.json');
 
-const newFr = {
+const newFrKeys = {
   "admin_title": "Dashboard Admin",
   "admin_connected": "Connecté en tant que : ",
   "admin_logout": "Logout",
@@ -28,7 +27,7 @@ const newFr = {
   "admin_tips_p": "Astuce : commence par <strong>Cours → Chapitres → Leçons → Ressources</strong>."
 };
 
-const newAr = {
+const newArKeys = {
   "admin_title": "لوحة تحكم المسؤول",
   "admin_connected": "متصل كـ : ",
   "admin_logout": "تسجيل الخروج",
@@ -51,9 +50,39 @@ const newAr = {
   "admin_tips_p": "نصيحة: ابدأ بـ <strong>الدروس ← الفصول ← الدروس ← الموارد</strong>."
 };
 
-Object.assign(frData, newFr);
-Object.assign(arData, newAr);
+function safeMergeLocalization(filePath, payloadKeys) {
+  try {
+    let currentData = {};
 
-fs.writeFileSync(frPath, JSON.stringify(frData, null, 2));
-fs.writeFileSync(arPath, JSON.stringify(arData, null, 2));
-console.log("Done");
+    if (fs.existsSync(filePath)) {
+      const parsedFileContent = fs.readFileSync(filePath, 'utf8');
+      currentData = parsedFileContent.trim() ? JSON.parse(parsedFileContent) : {};
+    } else {
+      console.log(`[Initialization] Targeting new dictionary instance file initialization at: ${filePath}`);
+    }
+
+    // Inspect trace loops for colliding namespace flags
+    Object.keys(payloadKeys).forEach(key => {
+      if (currentData[key] !== undefined && currentData[key] !== payloadKeys[key]) {
+        console.warn(`[Collision Warning] Key "${key}" value overwritten inside target dataset path map.`);
+      }
+    });
+
+    const updatedData = Object.assign({}, currentData, payloadKeys);
+    
+    // Ensure target folder maps exist safely before file write execution
+    fs.mkdirSync(path.dirname(filePath), { recursive: true });
+    fs.writeFileSync(filePath, JSON.stringify(updatedData, null, 2), 'utf8');
+    
+    console.log(`[Success] Successfully compiled and merged entries to target mapping space: ${filePath}`);
+  } catch (error) {
+    console.error(`[Fatal Error] System failed to compile dictionary mapping context safely at: ${filePath}`, error);
+    process.exit(1);
+  }
+}
+
+// Fire transactional safe merge executions
+safeMergeLocalization(frPath, newFrKeys);
+safeMergeLocalization(arPath, newArKeys);
+
+console.log("Compilation tasks complete.");

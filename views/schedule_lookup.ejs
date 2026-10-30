@@ -1,7 +1,7 @@
 <h1><%- __("schedule_title") %></h1>
 
 <section class="card schedule-card">
-  <p class="lead" style="margin-top:0;">
+  <p class="lead lead-flush">
     <%- __("schedule_lead") %>
   </p>
 
@@ -14,11 +14,12 @@
   <form method="POST" action="/emploi-du-temps" class="schedule-form">
     <div class="field">
       <label for="code"><%- __("schedule_label_code") %></label>
-      <input id="code" type="text" name="code" required placeholder="<%- __("schedule_placeholder") %>" autocomplete="off">
-      <p class="muted" style="margin:6px 0 0;"><%- __("schedule_muted_info") %></p>
+      <!-- Fixed nested double-quote syntax to prevent attribute parser breakages -->
+      <input id="code" type="text" name="code" required placeholder='<%- __("schedule_placeholder") %>' autocomplete="off">
+      <p class="muted field-hint"><%- __("schedule_muted_info") %></p>
     </div>
 
-    <div class="cta-row" style="margin:12px 0 0;">
+    <div class="cta-row action-row-spacing">
       <button type="submit" class="btn btn-primary"><%- __("schedule_btn_view") %></button>
       <a class="btn btn-secondary" href="/professeur"><%- __("schedule_btn_no_code") %></a>
     </div>

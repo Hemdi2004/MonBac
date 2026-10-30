@@ -4,141 +4,201 @@ const { requireAdmin } = require("../middleware/auth");
 
 const router = express.Router();
 
-// List + create programs
-router.get("/admin/programs", requireAdmin, async (req, res) => {
-  const [programs] = await pool.query("SELECT * FROM community_programs ORDER BY created_at DESC");
-  res.render("admin/programs", { programs, error: req.query.error || null});
+// ==========================================
+// Programs: List All Programs
+// ==========================================
+router.get("/admin/programs", requireAdmin, async (req, res, next) => {
+  try {
+    const [programs] = await pool.query("SELECT * FROM community_programs ORDER BY created_at DESC");
+    res.render("admin/programs", { programs, error: req.query.error || null });
+  } catch (err) {
+    next(err);
+  }
 });
 
-router.post("/admin/programs", requireAdmin, async (req, res) => {
+// ==========================================
+// Programs: Create New Program
+// ==========================================
+router.post("/admin/programs", requireAdmin, async (req, res, next) => {
   const { title, level, description } = req.body;
 
-  await pool.query(
-    "INSERT INTO community_programs (title, level, description) VALUES (?, ?, ?)",
-    [title, level, description || null]
-  );
+  try {
+    await pool.query(
+      "INSERT INTO community_programs (title, level, description) VALUES (?, ?, ?)",
+      [title, level, description || null]
+    );
 
-  res.redirect("/admin/programs");
+    res.redirect("/admin/programs");
+  } catch (err) {
+    next(err);
+  }
 });
 
-// 1. GET THE EDIT PAGE
-router.get("/admin/programs/:id/edit", requireAdmin, async (req, res) => {
-  // We use [ [row] ] to get the first result of the array
-  const [[program]] = await pool.query("SELECT * FROM community_programs WHERE id = ?", [req.params.id]);
-  
-  if (!program) return res.status(404).send("Program not found");
-  
-  // Note: I renamed 'row' to 'program' for clarity in your EJS
-  res.render("admin/program_edit", { program, error: null });
+// ==========================================
+// Programs: Edit View Form
+// ==========================================
+router.get("/admin/programs/:id/edit", requireAdmin, async (req, res, next) => {
+  const { id: programId } = req.params;
+
+  try {
+    const [[program]] = await pool.query("SELECT * FROM community_programs WHERE id = ?", [programId]);
+    if (!program) return res.status(404).send("Program not found");
+    
+    res.render("admin/program_edit", { program, error: null });
+  } catch (err) {
+    next(err);
+  }
 });
 
-// 2. HANDLE THE UPDATE
-router.post("/admin/programs/:id/edit", requireAdmin, async (req, res) => {
+// ==========================================
+// Programs: Handle Update Execution
+// ==========================================
+router.post("/admin/programs/:id/edit", requireAdmin, async (req, res, next) => {
+  const { id: programId } = req.params;
   const { title, level, description } = req.body;
   
-  await pool.query(
-    "UPDATE community_programs SET title = ?, level = ?, description = ? WHERE id = ?",
-    [title, level, description || null, req.params.id]
-  );
-  
-  res.redirect("/admin/programs");
+  try {
+    await pool.query(
+      "UPDATE community_programs SET title = ?, level = ?, description = ? WHERE id = ?",
+      [title, level, description || null, programId]
+    );
+    
+    res.redirect("/admin/programs");
+  } catch (err) {
+    next(err);
+  }
 });
 
-// 3. HANDLE DELETE (With Safety Check)
-router.post("/admin/programs/:id/delete", requireAdmin, async (req, res) => {
-  const programId = req.params.id;
+// ==========================================
+// Programs: Handle Delete with Safety Checks
+// ==========================================
+router.post("/admin/programs/:id/delete", requireAdmin, async (req, res, next) => {
+  const { id: programId } = req.params;
 
-  // Check if there are sessions linked to this program
-  const [[dep]] = await pool.query(
-    "SELECT COUNT(*) AS cnt FROM community_sessions WHERE program_id = ?",
-    [programId]
-  );
+  try {
+    const [[dep]] = await pool.query(
+      "SELECT COUNT(*) AS cnt FROM community_sessions WHERE program_id = ?",
+      [programId]
+    );
 
-  if (dep.cnt > 0) {
-  return res.redirect("/admin/programs?error=" + encodeURIComponent("Impossible de supprimer : ce programme contient des séances."));
-  }  
+    if (dep.cnt > 0) {
+      const errMsg = encodeURIComponent("Impossible de supprimer : ce programme contient des séances.");
+      return res.redirect(`/admin/programs?error=${errMsg}`);
+    }  
 
-  await pool.query("DELETE FROM community_programs WHERE id = ?", [programId]);
-  res.redirect("/admin/programs");
+    await pool.query("DELETE FROM community_programs WHERE id = ?", [programId]);
+    res.redirect("/admin/programs");
+  } catch (err) {
+    next(err);
+  }
 });
 
-// Sessions page for a program
-router.get("/admin/programs/:id/sessions", requireAdmin, async (req, res) => {
-  const programId = req.params.id;
+// ==========================================
+// Sessions: List Sessions for a Specific Program
+// ==========================================
+router.get("/admin/programs/:id/sessions", requireAdmin, async (req, res, next) => {
+  const { id: programId } = req.params;
 
-  const [[program]] = await pool.query("SELECT * FROM community_programs WHERE id=?", [programId]);
-  if (!program) return res.status(404).send("Program not found");
+  try {
+    const [[program]] = await pool.query("SELECT * FROM community_programs WHERE id = ?", [programId]);
+    if (!program) return res.status(404).send("Program not found");
 
-  const [groups] = await pool.query("SELECT * FROM community_groups ORDER BY level, name");
+    const [groups] = await pool.query("SELECT * FROM community_groups ORDER BY level, name");
 
-  const [sessions] = await pool.query(
-    `SELECT cs.*, cg.name AS group_name
-     FROM community_sessions cs
-     JOIN community_groups cg ON cg.id = cs.group_id
-     WHERE cs.program_id = ?
-     ORDER BY cs.session_date ASC, cs.session_time ASC`,
-    [programId]
-  );
+    const [sessions] = await pool.query(
+      `SELECT cs.*, cg.name AS group_name
+       FROM community_sessions cs
+       JOIN community_groups cg ON cg.id = cs.group_id
+       WHERE cs.program_id = ?
+       ORDER BY cs.session_date ASC, cs.session_time ASC`,
+      [programId]
+    );
 
-  res.render("admin/sessions", { program, groups, sessions });
+    res.render("admin/sessions", { program, groups, sessions });
+  } catch (err) {
+    next(err);
+  }
 });
 
-router.post("/admin/programs/:id/sessions", requireAdmin, async (req, res) => {
-  const programId = req.params.id;
+// ==========================================
+// Sessions: Create Session inside a Program
+// ==========================================
+router.post("/admin/programs/:id/sessions", requireAdmin, async (req, res, next) => {
+  const { id: programId } = req.params;
   const { group_id, title, session_date, session_time, meeting_link, notes } = req.body;
 
-  await pool.query(
-    `INSERT INTO community_sessions 
-      (program_id, group_id, title, session_date, session_time, meeting_link, notes)
-     VALUES (?, ?, ?, ?, ?, ?, ?)`,
-    [programId, group_id, title, session_date, session_time, meeting_link || null, notes || null]
-  );
+  try {
+    await pool.query(
+      `INSERT INTO community_sessions 
+        (program_id, group_id, title, session_date, session_time, meeting_link, notes)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [programId, group_id, title, session_date, session_time, meeting_link || null, notes || null]
+    );
 
-  res.redirect(`/admin/programs/${programId}/sessions`);
+    res.redirect(`/admin/programs/${programId}/sessions`);
+  } catch (err) {
+    next(err);
+  }
 });
 
-// 1. GET THE EDIT PAGE
-router.get("/admin/sessions/:id/edit", requireAdmin, async (req, res) => {
-  const sessionId = req.params.id;
+// ==========================================
+// Sessions: Edit View Form
+// ==========================================
+router.get("/admin/sessions/:id/edit", requireAdmin, async (req, res, next) => {
+  const { id: sessionId } = req.params;
 
-  // Fetch the session
-  const [[session]] = await pool.query("SELECT * FROM community_sessions WHERE id = ?", [sessionId]);
-  if (!session) return res.status(404).send("Session not found");
+  try {
+    const [[session]] = await pool.query("SELECT * FROM community_sessions WHERE id = ?", [sessionId]);
+    if (!session) return res.status(404).send("Session not found");
 
-  // Fetch groups so the admin can change the group if needed
-  const [groups] = await pool.query("SELECT * FROM community_groups ORDER BY level, name");
+    const [groups] = await pool.query("SELECT * FROM community_groups ORDER BY level, name");
 
-  res.render("admin/session_edit", { session, groups, error: null });
+    res.render("admin/session_edit", { session, groups, error: null });
+  } catch (err) {
+    next(err);
+  }
 });
 
-// 2. HANDLE THE UPDATE
-router.post("/admin/sessions/:id/edit", requireAdmin, async (req, res) => {
-  const sessionId = req.params.id;
+// ==========================================
+// Sessions: Handle Update Execution
+// ==========================================
+router.post("/admin/sessions/:id/edit", requireAdmin, async (req, res, next) => {
+  const { id: sessionId } = req.params;
   const { group_id, title, session_date, session_time, meeting_link, notes } = req.body;
 
-  // We need the program_id to redirect back to the correct list after saving
-  const [[current]] = await pool.query("SELECT program_id FROM community_sessions WHERE id = ?", [sessionId]);
+  try {
+    const [[current]] = await pool.query("SELECT program_id FROM community_sessions WHERE id = ?", [sessionId]);
+    if (!current) return res.status(404).send("Session context not found");
 
-  await pool.query(
-    `UPDATE community_sessions 
-     SET group_id = ?, title = ?, session_date = ?, session_time = ?, meeting_link = ?, notes = ? 
-     WHERE id = ?`,
-    [group_id, title, session_date, session_time, meeting_link || null, notes || null, sessionId]
-  );
+    await pool.query(
+      `UPDATE community_sessions 
+       SET group_id = ?, title = ?, session_date = ?, session_time = ?, meeting_link = ?, notes = ? 
+       WHERE id = ?`,
+      [group_id, title, session_date, session_time, meeting_link || null, notes || null, sessionId]
+    );
 
-  res.redirect(`/admin/programs/${current.program_id}/sessions`);
+    res.redirect(`/admin/programs/${current.program_id}/sessions`);
+  } catch (err) {
+    next(err);
+  }
 });
 
-// 3. HANDLE DELETE
-router.post("/admin/sessions/:id/delete", requireAdmin, async (req, res) => {
-  const sessionId = req.params.id;
+// ==========================================
+// Sessions: Handle Delete Execution
+// ==========================================
+router.post("/admin/sessions/:id/delete", requireAdmin, async (req, res, next) => {
+  const { id: sessionId } = req.params;
 
-  // Get program_id before deleting so we know where to redirect
-  const [[current]] = await pool.query("SELECT program_id FROM community_sessions WHERE id = ?", [sessionId]);
-  if (!current) return res.redirect("/admin/programs");
+  try {
+    const [[current]] = await pool.query("SELECT program_id FROM community_sessions WHERE id = ?", [sessionId]);
+    if (!current) return res.redirect("/admin/programs");
 
-  await pool.query("DELETE FROM community_sessions WHERE id = ?", [sessionId]);
-  
-  res.redirect(`/admin/programs/${current.program_id}/sessions`);
+    await pool.query("DELETE FROM community_sessions WHERE id = ?", [sessionId]);
+    
+    res.redirect(`/admin/programs/${current.current.program_id || current.program_id}/sessions`);
+  } catch (err) {
+    next(err);
+  }
 });
+
 module.exports = router;

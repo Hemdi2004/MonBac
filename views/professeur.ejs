@@ -1,64 +1,43 @@
 <%
-  const PHONE_TEL = "212 665 708 404"; // digits only, no +, no spaces
-  const PHONE_DISPLAY = "+212 665 708 404"; // formatted for display
-  const WHATSAPP_NUMBER = "212 676 567 566"; // digits only, no +
-  const WHATSAPP_TEXT = encodeURIComponent("Bonjour Professeur, je souhaite un accompagnement en mathématiques.\nNiveau: ...\nVille: ...\nObjectif: ...\nChapitre(s): ...");
+  // Standardized configuration parameters cleansed of spaces for secure link execution
+  const PHONE_TEL_CLEAN = "212665708404";
 %>
-
 
 <section class="teacher-hero card">
   <div class="teacher-hero__left">
-  <p class="badge"><%= __("prof_badge") %></p>
+    <p class="badge"><%= __("prof_badge") %></p>
 
-  <h1>
-    <%- __("prof_title") %>
-  </h1>
+    <h1><%- __("prof_title") %></h1>
 
-  <p class="lead">
-    <%- __("prof_lead") %>
-  </p>
+    <p class="lead"><%- __("prof_lead") %></p>
 
-  <div class="cta-row">
-    <a class="btn btn-primary"
-       href="<%= whatsappLink %>"
-       target="_blank" rel="noopener">
-      <%- __("prof_wa") %>
-    </a>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="<%= whatsappLink %>" target="_blank" rel="noopener">
+        <%- __("prof_wa") %>
+      </a>
 
-    <a class="btn btn-secondary" href="tel:+<%= PHONE_TEL %>">
-      <%- __("prof_call") %>
-    </a>
+      <a class="btn btn-secondary" href="tel:+<%= PHONE_TEL_CLEAN %>">
+        <%- __("prof_call") %>
+      </a>
+    </div>
   </div>
-</div>
 
-
-<div class="teacher-hero__right">
-  <div class="teacher-card">
-    <img
-      src="/public/images/professeur.jpg"
-      alt="Professeur de mathématiques"
-      class="teacher-photo"
-    />
-<div class="teacher-identity">
-  <p class="teacher-name"><%- __("prof_name") %></p>
-
-  <p class="teacher-description">
-    <%- __("prof_desc") %>
-  </p>
-</div>
-</div>
+  <div class="teacher-hero__right">
+    <div class="teacher-card">
+      <img src="/public/images/professeur.jpg" alt="Professeur de mathématiques" class="teacher-photo" />
+      
+        <p class="teacher-name"><%- __("prof_name") %></p>
+        <p class="teacher-description"><%- __("prof_desc") %></p>
+      </div>
+    </div>
   </div>
-</div>
-
 </section>
 
 <section class="center-location card">
   <div class="center-content">
     <p class="badge"><%- __("prof_center_badge") %></p>
     <h2><%- __("prof_center_title") %></h2>
-    <p class="lead">
-      <%- __("prof_center_lead") %>
-    </p>
+    <p class="lead"><%- __("prof_center_lead") %></p>
     
     <ul class="location-details">
       <li><i data-lucide="map-pin"></i> <%- __("prof_center_li1") %></li>
@@ -67,7 +46,7 @@
     </ul>
 
     <div class="cta-row">
-      <a class="btn btn-secondary" href="https://www.google.com/maps/@35.7675765,-5.853327,1346m/data=!3m1!1e3?entry=ttu&g_ep=EgoyMDI2MDIwNC4wIKXMDSoASAFQAw%3D%3D" target="_blank">
+      <a class="btn btn-secondary" href="https://www.google.com/maps/@35.7675765,-5.853327,1346m/data=!3m1!1e3?entry=ttu&g_ep=EgoyMDI2MDIwNC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener">
         <%- __("prof_center_btn") %>
       </a>
     </div>
@@ -75,7 +54,6 @@
 
   <div class="center-image">
     <img src="/public/images/prof.jpeg" alt="Centre de soutien MonBac Tanger" />
-    
   </div>
 </section>
 
@@ -121,24 +99,16 @@
   </ol>
 
   <div class="cta-box">
-    <div>
+    <div class="cta-text-wrapper">
       <h3><%- __("prof_ready") %></h3>
       <p class="muted"><%- __("prof_ready_muted") %></p>
     </div>
-    <a class="btn btn-primary"
-       href="<%= whatsappLink %>"
-       target="_blank" rel="noopener">
+    <a class="btn btn-primary" href="<%= whatsappLink %>" target="_blank" rel="noopener">
       <%- __("prof_wa") %>
     </a>
   </div>
-
-  <!-- <p class="muted">
-    📞 Téléphone : <strong><%= PHONE_DISPLAY %></strong>
-  </p> -->
 </section>
 
-    <a class="sticky-wa"
-       href="<%= whatsappLink %>"
-       target="_blank" rel="noopener">
-      <%- __("prof_wa_quick") %>
-    </a>
+<a class="sticky-wa" href="<%= whatsappLink %>" target="_blank" rel="noopener">
+  <%- __("prof_wa_quick") %>
+</a>
