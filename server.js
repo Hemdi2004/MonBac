@@ -50,6 +50,7 @@ app.use((req, res, next) => {
 // ==========================================
 // 3. Session & Security Compliance
 // ==========================================
+app.set("trust proxy", 1);
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "development_fallback_secret_key",
