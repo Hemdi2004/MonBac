@@ -29,7 +29,7 @@
   <% if (!chapters || chapters.length === 0) { %>
     <!-- Clean, semantic empty state block utilizing component-level empty CSS classes -->
     <div class="empty-state empty-state-dashed">
-      <i data-lucide="book-dashed" class="empty-state-icon"></i>
+      <i data-lucide="book-open" class="empty-state-icon"></i>
       <h3 class="empty-state-heading">Aucun contenu pour le moment</h3>
       <p class="empty-state-text">Ce cours vient d'être créé. Le professeur ajoute les chapitres bientôt !</p>
     </div>
@@ -37,13 +37,19 @@
     <div class="chapters-grid">
       <% chapters.forEach(chapter => { %>
         <article class="chapter card">
-          <h3 class="chapter-title"><%= chapter.title %></h3>
+          <% const filteredLessons = (lessons || []).filter(lesson => String(lesson.chapter_id) === String(chapter.id)); %>
+          <header class="chapter-header">
+            <div class="chapter-heading">
+              <span class="chapter-mark" aria-hidden="true"><i data-lucide="layers"></i></span>
+              <div>
+                <p class="chapter-eyebrow">Chapitre <%= chapter.position %></p>
+                <h3 class="chapter-title"><%= chapter.title %></h3>
+              </div>
+            </div>
+            <span class="chapter-count"><%= filteredLessons.length %> <%= filteredLessons.length === 1 ? 'leçon' : 'leçons' %></span>
+          </header>
 
           <ul class="lesson-list">
-            <% 
-              // Optimization: Pre-filtering lesson array directly with structured strict-type matching
-              const filteredLessons = (lessons || []).filter(lesson => String(lesson.chapter_id) === String(chapter.id));
-            %>
 
             <% if (filteredLessons.length === 0) { %>
               <li class="empty-state-item text-center">
@@ -55,7 +61,7 @@
                 <li>
                   <a class="lesson-link" href="/lesson/<%= lesson.id %>">
                     <span class="lesson-left">
-                      <span class="lesson-num"><%= (lesson.position ?? (index + 1)) %></span>
+                      <i data-lucide="book-open" class="lesson-icon" aria-hidden="true"></i>
                       <span class="lesson-name"><%= lesson.title %></span>
                     </span>
                     <span class="lesson-arrow">→</span>
