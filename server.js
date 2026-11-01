@@ -5,6 +5,7 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const expressLayouts = require("express-ejs-layouts");
 const i18n = require("i18n");
+const statusMonitor = require('express-status-monitor');
 
 // DB initialization verified (handled internally by the module)
 require("./db"); 
@@ -13,6 +14,8 @@ const routes = require("./routes");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
+
+app.use(statusMonitor());
 
 // ==========================================
 // 1. Internationalization (i18n) & Parsers
