@@ -1,16 +1,16 @@
-<div class="page-head">
+﻿<div class="page-head">
   <div>
-    <h1>Chapitres — <%= course.title %></h1>
-    <p class="muted">Ajouter, organiser et gérer les chapitres de ce cours.</p>
+    <h1>Chapitres â€” <%= course.title %></h1>
+    <p class="muted">Ajouter, organiser et gÃ©rer les chapitres de ce cours.</p>
   </div>
 
   <div class="cta-row" style="margin:0;">
-    <a class="btn btn-secondary" href="/admin/courses">← Retour aux cours</a>
+    <a class="btn btn-secondary" href="/admin/courses">â† Retour aux cours</a>
   </div>
 </div>
 
 <% if (error) { %>
-  <div class="card" style="border-color:#fecaca; background:#fff1f2;">
+  <div class="card card-error">
     <p style="margin:0; font-weight:900;">Erreur</p>
     <p class="muted" style="margin:6px 0 0;"><%= error %></p>
   </div>
@@ -28,7 +28,7 @@
     <div class="field">
       <label for="position">Position (ordre)</label>
       <input id="position" name="position" type="number" value="0" />
-      <p class="muted">0 = en haut si aucun autre ordre n’est défini.</p>
+      <p class="muted">0 = en haut si aucun autre ordre nâ€™est dÃ©fini.</p>
     </div>
 
     <div class="cta-row">
@@ -60,10 +60,10 @@
 
             <div style="text-align:right;">
               <div class="cta-row" style="justify-content:flex-end; margin:0;">
-                <a class="btn btn-secondary btn-sm" href="/admin/chapters/<%= ch.id %>/lessons">Leçons</a>
+                <a class="btn btn-secondary btn-sm" href="/admin/chapters/<%= ch.id %>/lessons">LeÃ§ons</a>
                 <a class="btn btn-secondary btn-sm" href="/admin/chapters/<%= ch.id %>/edit">Edit</a>
                 <form method="POST" action="/admin/chapters/<%= ch.id %>/delete" class="inline"
-                      onsubmit="return confirm('Supprimer ce chapitre ? Les leçons liées peuvent être affectées.');">
+                      onsubmit="return confirm('Supprimer ce chapitre ? Les leÃ§ons liÃ©es peuvent Ãªtre affectÃ©es.');">
                   <button class="btn btn-secondary btn-sm" type="submit">Delete</button>
                 </form>
               </div>

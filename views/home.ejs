@@ -1,16 +1,16 @@
-<section class="home-hero" style="text-align: center; padding: 4rem 1rem; background: linear-gradient(135deg, #eef2ff 0%, #f9fafb 100%); border-radius: 24px; margin-bottom: 3rem; margin-top: 1rem; border: 1px solid #e5e7eb; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
-  <div style="max-width: 650px; margin: 0 auto;">
-    <h1 style="font-size: 2.8rem; font-weight: 800; color: #111827; margin-bottom: 1rem; line-height: 1.2;">
-      <%= __("hero_title_1") %> <span style="color: #4f46e5;"><%= __("hero_title_2") %></span>
+<section class="home-hero home-hero--landing">
+  <div class="home-hero__inner">
+    <h1 class="home-hero__title">
+      <%= __("hero_title_1") %> <span class="accent"><%= __("hero_title_2") %></span>
     </h1>
-    <p style="font-size: 1.15rem; color: #4b5563; margin-bottom: 2rem; line-height: 1.6;">
+    <p class="home-hero__desc">
       <%= __("hero_desc") %>
     </p>
-    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-      <a href="#courses" class="btn btn-primary" style="font-size: 1.05rem; padding: 0.8rem 1.8rem; border-radius: 999px; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);">
+    <div class="home-hero__actions">
+      <a href="#courses" class="btn btn-primary btn-lg">
         <i data-lucide="book-open"></i> <%= __("hero_btn_courses") %>
       </a>
-      <a href="/communaute" class="btn btn-secondary" style="font-size: 1.05rem; padding: 0.8rem 1.8rem; border-radius: 999px;">
+      <a href="/communaute" class="btn btn-secondary btn-lg">
         <i data-lucide="users"></i> <%= __("hero_btn_community") %>
       </a>
     </div>
@@ -36,10 +36,10 @@
     %>
       <div class="tab-panel <%= isActive ? 'active' : '' %>" data-panel="<%= category %>">
         <% if (courseList.length === 0) { %>
-          <div style="text-align: center; padding: 3rem 1rem; border: 2px dashed #e5e7eb; border-radius: 16px; background: #fafafa; margin-top: 1rem;">
-            <i data-lucide="folder-open" style="width: 48px; height: 48px; color: #9ca3af; margin-bottom: 1rem;"></i>
-            <h3 style="font-size: 1.2rem; color: #4b5563; margin: 0 0 0.5rem 0;"><%= __("empty_course_title") %></h3>
-            <p style="color: #9ca3af; margin: 0;"><%= __("empty_course_desc") %></p>
+          <div class="empty-state">
+            <i data-lucide="folder-open" class="empty-state-icon"></i>
+            <h3 class="empty-state-heading"><%= __("empty_course_title") %></h3>
+            <p class="empty-state-text"><%= __("empty_course_desc") %></p>
           </div>
         <% } else { %>
           <ul class="course-grid">

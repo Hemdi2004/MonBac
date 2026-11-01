@@ -4,28 +4,28 @@
   <%= __("g_schedule_level") %><strong><%= group.level %></strong><%= __("g_schedule_type") %><strong><%= group.type %></strong>
 </p>
 
-<section class="schedule-card-wrapper" style="background: #fff; padding: 20px; border-radius: 8px; margin-top: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+<section class="schedule-card-wrapper">
   <% if (!sessions || sessions.length === 0) { %>
     <p><%= __("g_schedule_empty") %></p>
   <% } else { %>
-    <table class="schedule-table" style="width: 100%; border-collapse: collapse; text-align: left;">
+    <table class="schedule-table">
       <thead>
-        <tr style="border-bottom: 2px solid #e2e8f0;">
-          <th style="padding: 10px;"><%= __("g_schedule_th_prog") %></th>
-          <th style="padding: 10px;"><%= __("g_schedule_th_date") %></th>
-          <th style="padding: 10px;"><%= __("g_schedule_th_time") %></th>
-          <th style="padding: 10px;"><%= __("g_schedule_th_title") %></th>
-          <th style="padding: 10px;"><%= __("g_schedule_th_link") %></th>
+        <tr>
+          <th><%= __("g_schedule_th_prog") %></th>
+          <th><%= __("g_schedule_th_date") %></th>
+          <th><%= __("g_schedule_th_time") %></th>
+          <th><%= __("g_schedule_th_title") %></th>
+          <th><%= __("g_schedule_th_link") %></th>
         </tr>
       </thead>
       <tbody>
         <% sessions.forEach(sessionItem => { %>
-          <tr style="border-bottom: 1px solid #edf2f7;">
-            <td style="padding: 10px;"><%= sessionItem.program_title %></td>
-            <td style="padding: 10px;"><%= sessionItem.session_date %></td>
-            <td style="padding: 10px;"><%= sessionItem.session_time %></td>
-            <td style="padding: 10px;"><%= sessionItem.title %></td>
-            <td style="padding: 10px;">
+          <tr>
+            <td><%= sessionItem.program_title %></td>
+            <td><%= sessionItem.session_date %></td>
+            <td><%= sessionItem.session_time %></td>
+            <td><%= sessionItem.title %></td>
+            <td>
               <% if (sessionItem.meeting_link) { %>
                 <a href="<%= sessionItem.meeting_link %>" target="_blank" rel="noopener noreferrer"><%= __("g_schedule_open") %></a>
               <% } else { %>
@@ -39,6 +39,6 @@
   <% } %>
 </section>
 
-<p style="margin-top: 15px;">
+<p class="back-row">
   <a href="/emploi-du-temps" class="back-link"><%= __("g_schedule_back") %></a>
 </p>

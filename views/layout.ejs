@@ -18,7 +18,10 @@
     <link rel="canonical" href="<%= canonical %>">
   <% } %>
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#0F6B54">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/public/style.css">
 </head>
 <body>
@@ -43,10 +46,10 @@
       <a class="nav-link" href="/emploi-du-temps"><%= __("nav_schedule") %></a>
       
       <!-- Language Switcher -->
-      <div class="lang-switcher" style="margin-inline-start: 10px; display: flex; gap: 8px; align-items: center;">
-        <a href="/lang/fr" style="text-decoration: none; font-weight: bold; background: <%= locale === 'fr' ? '#eef2ff' : 'transparent' %>; color: <%= locale === 'fr' ? '#1d4ed8' : 'var(--muted)' %>; padding: 4px 8px; border-radius: 6px;">Fr</a>
-        <a href="/lang/ar" style="text-decoration: none; font-weight: bold; background: <%= locale === 'ar' ? '#eef2ff' : 'transparent' %>; color: <%= locale === 'ar' ? '#1d4ed8' : 'var(--muted)' %>; padding: 4px 8px; border-radius: 6px;">عربي</a>
-        <a href="/lang/en" style="text-decoration: none; font-weight: bold; background: <%= locale === 'en' ? '#eef2ff' : 'transparent' %>; color: <%= locale === 'en' ? '#1d4ed8' : 'var(--muted)' %>; padding: 4px 8px; border-radius: 6px;">En</a>
+      <div class="lang-switcher">
+        <a href="/lang/fr" class="lang-link <%= locale === 'fr' ? 'is-active' : '' %>">Fr</a>
+        <a href="/lang/ar" class="lang-link <%= locale === 'ar' ? 'is-active' : '' %>">عربي</a>
+        <a href="/lang/en" class="lang-link <%= locale === 'en' ? 'is-active' : '' %>">En</a>
       </div>
     </nav>
   </div>

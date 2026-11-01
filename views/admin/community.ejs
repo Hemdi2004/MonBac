@@ -32,11 +32,11 @@
 
           <div>
             <% if (r.status === "pending") { %>
-              <span class="badge" style="margin:0;">En attente</span>
+              <span class="badge badge-warning" style="margin:0;">En attente</span>
             <% } else if (r.status === "accepted") { %>
-              <span class="badge" style="margin:0; background:#ecfdf5; color:#065f46;">Accepté</span>
+              <span class="badge badge-success" style="margin:0;">Accepté</span>
             <% } else if (r.status === "rejected") { %>
-              <span class="badge" style="margin:0; background:#fff1f2; color:#9f1239;">Refusé</span>
+              <span class="badge badge-danger" style="margin:0;">Refusé</span>
             <% } else { %>
               <span class="muted"><%= r.status %></span>
             <% } %>

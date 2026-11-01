@@ -131,9 +131,9 @@
             </a>
           <% }) %>
           <% if (!(files || []).some(f => f.category === 'explanation')) { %>
-            <div style="padding: 1rem; border: 1px dashed #e5e7eb; border-radius: 12px; background: #f9fafb; display: flex; align-items: center; gap: 10px;">
-              <i data-lucide="file-question" style="width: 24px; height: 24px; color: #d1d5db;"></i>
-              <p style="color: #9ca3af; margin: 0; font-size: 0.95rem;"><%= __('no_explanations_yet') %></p>
+            <div class="empty-inline">
+              <i data-lucide="file-question"></i>
+              <p><%= __('no_explanations_yet') %></p>
             </div>
           <% } %>
         </div>
@@ -149,9 +149,9 @@
             </a>
           <% }) %>
           <% if (!(files || []).some(f => f.category === 'exercise')) { %>
-            <div style="padding: 1rem; border: 1px dashed #e5e7eb; border-radius: 12px; background: #f9fafb; display: flex; align-items: center; gap: 10px;">
-              <i data-lucide="file-question" style="width: 24px; height: 24px; color: #d1d5db;"></i>
-              <p style="color: #9ca3af; margin: 0; font-size: 0.95rem;"><%= __('no_exercises_yet') %></p>
+            <div class="empty-inline">
+              <i data-lucide="file-question"></i>
+              <p><%= __('no_exercises_yet') %></p>
             </div>
           <% } %>
         </div>
@@ -167,9 +167,9 @@
             </a>
           <% }) %>
           <% if (!(files || []).some(f => f.category === 'solution')) { %>
-            <div style="padding: 1rem; border: 1px dashed #e5e7eb; border-radius: 12px; background: #f9fafb; display: flex; align-items: center; gap: 10px;">
-              <i data-lucide="file-question" style="width: 24px; height: 24px; color: #d1d5db;"></i>
-              <p style="color: #9ca3af; margin: 0; font-size: 0.95rem;"><%= __('no_solutions_yet') %></p>
+            <div class="empty-inline">
+              <i data-lucide="file-question"></i>
+              <p><%= __('no_solutions_yet') %></p>
             </div>
           <% } %>
         </div>
@@ -179,113 +179,15 @@
 <!-- ==========================================
      NEMOTRON AI TUTOR COMPONENT (Hackathon)
      ========================================== -->
-<style>
-  .ai-tutor-container {
-    background-color: #F8FAFC;
-    border: 1px solid #e5e7eb;
-    border-radius: 16px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-  }
-  .ai-tutor-header {
-    color: #0F172A;
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .ai-chat-window {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    max-height: 400px;
-    overflow-y: auto;
-    padding-inline-end: 0.5rem;
-    margin-bottom: 1.5rem;
-  }
-  .chat-bubble {
-    max-width: 85%;
-    padding: 1rem 1.25rem;
-    line-height: 1.5;
-    font-size: 0.95rem;
-  }
-  .bubble-student {
-    align-self: flex-end;
-    background-color: #2563EB;
-    color: #ffffff;
-    border-start-end-radius: 16px;
-    border-start-start-radius: 16px;
-    border-end-start-radius: 16px;
-    border-end-end-radius: 4px;
-    margin-inline-start: auto;
-  }
-  .bubble-ai {
-    align-self: flex-start;
-    background-color: #ffffff;
-    color: #475569;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-    border-start-end-radius: 16px;
-    border-start-start-radius: 16px;
-    border-end-end-radius: 16px;
-    border-end-start-radius: 4px;
-    margin-inline-end: auto;
-  }
-  .ai-input-wrapper {
-    display: flex;
-    gap: 0.75rem;
-  }
-  .ai-input-field {
-    flex-grow: 1;
-    background: #ffffff;
-    border: 1px solid #cbd5e1;
-    border-radius: 999px; 
-    padding: 0.75rem 1.5rem;
-    color: #0F172A;
-    outline: none;
-    transition: all 0.2s ease;
-  }
-  .ai-input-field:focus {
-    border-color: #2563EB;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-  }
-  .ai-btn-submit {
-    background-color: #2563EB;
-    color: #ffffff;
-    border: none;
-    border-radius: 999px;
-    padding: 0.75rem 1.75rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s;
-  }
-  .ai-btn-submit:hover {
-    background-color: #1d4ed8;
-  }
-  .ai-btn-submit:active {
-    transform: scale(0.97);
-  }
-  .ai-typing-indicator {
-    color: #9ca3af;
-    font-size: 0.85rem;
-    font-style: italic;
-    align-self: flex-start;
-    padding-inline-start: 1rem;
-  }
-</style>
-
 <section class="ai-tutor-container card">
   <div class="ai-tutor-header">
-    <span style="font-size: 1.5rem;">🤖</span> 
+    <span class="ai-tutor-icon">🤖</span> 
     <%= __('lesson_ai_title') %> : <%= __(lesson.title.trim()) %>
   </div>
   
   <div id="ai-chat-window" class="ai-chat-window">
     <div class="chat-bubble bubble-ai">
-      <%= __('lesson_ai_intro') %> <strong>NVIDIA Nemotron</strong>. <%= __('lesson_ai_question_prompt') %> <em><%= lesson.chapter_title %></em> ?
+      <%= __('lesson_ai_intro') %> <strong>NVIDIA Nemotron</strong>. <%= __('lesson_ai_question_prompt') %> <em><%= __(lesson.chapter_title) %></em> ?
     </div>
   </div>
 
@@ -332,11 +234,11 @@
             
         chatWindow.innerHTML += `<div class="chat-bubble bubble-ai">${formattedAnswer}</div>`;
       } else {
-        chatWindow.innerHTML += `<div class="chat-bubble bubble-ai" style="color: #ef4444;"><%= __('lesson_ai_error') %>: ${data.error}</div>`;
+        chatWindow.innerHTML += `<div class="chat-bubble bubble-ai bubble-error"><%= __('lesson_ai_error') %>: ${data.error}</div>`;
       }
     } catch (error) {
       document.getElementById(loadingId).remove();
-      chatWindow.innerHTML += `<div class="chat-bubble bubble-ai" style="color: #ef4444;"><%= __('lesson_ai_connection_error') %></div>`;
+      chatWindow.innerHTML += `<div class="chat-bubble bubble-ai bubble-error"><%= __('lesson_ai_connection_error') %></div>`;
     }
     
     chatWindow.scrollTop = chatWindow.scrollHeight;
