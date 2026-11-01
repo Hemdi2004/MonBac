@@ -46,11 +46,11 @@
             <% courseList.forEach(course => { %>
               <li class="course-card">
                 <h3 class="course-title">
-                  <a href="/course/<%= course.slug %>"><%= course.title %></a>
+                  <a href="/course/<%= course.slug %>"><%= __(course.title) %></a>
                 </h3>
-                <% if (course.description) { %>
-                  <p class="muted"><%= course.description %></p>
-                <% } %>
+              
+                  <p class="muted"><%= __('course_intro_fallback') %></p>
+                
                 <a class="course-link" href="/course/<%= course.slug %>"><%= __("btn_access_course") %></a>
               </li>
             <% }) %>

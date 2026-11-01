@@ -9,19 +9,20 @@
   };
 %>
 
+<div class="lesson-page" dir="<%= locale === 'ar' ? 'rtl' : 'ltr' %>">
 <nav class="breadcrumb">
-  <a href="/">Accueil</a>
+  <a href="/"><%= __('breadcrumb_home') %></a>
   <span class="sep">›</span>
-  <a href="/course/<%= lesson.course_slug %>"><%= lesson.course_title %></a>
+  <a href="/course/<%= lesson.course_slug %>"><%= __(lesson.course_title.trim()) %></a>
   <span class="sep">›</span>
-  <span class="current"><%= lesson.title %></span>
+  <span class="current"><%= __(lesson.title.trim()) %></span>
 </nav>
-<a class="btn btn-secondary return-btn" href="javascript:history.back()">← Retour</a>
+<a class="btn btn-secondary return-btn" href="/course/<%= lesson.course_slug %>"><%= __('btn_return') %></a>
 <div class="lesson-layout">
 
   <!-- Sidebar TOC -->
   <aside class="toc card">
-    <h3 class="toc-title">Plan du cours</h3>
+    <h3 class="toc-title"><%= __('course_plan') %></h3>
 
     <%
       const grouped = {};
@@ -50,7 +51,7 @@
     <div class="toc-groups">
       <% chapterOrder.forEach(chId => { %>
         <section class="toc-group">
-          <div class="toc-chapter"><%= grouped[chId].title %></div>
+          <div class="toc-chapter"><%= __(grouped[chId].title.trim()) %></div>
 
           <ul class="toc-list">
             <% grouped[chId].lessons.forEach(ls => { 
@@ -58,7 +59,7 @@
             %>
               <li>
                 <a class="toc-link <%= isActive ? 'active' : '' %>" href="/lesson/<%= ls.id %>">
-                  <%= ls.title %>
+                  <%= __(ls.title.trim()) %>
                 </a>
               </li>
             <% }) %>
@@ -71,9 +72,9 @@
   <!-- Main lesson content -->
   <section class="lesson-main">
     <header class="lesson-header">
-      <h1 class="lesson-title"><%= lesson.title %></h1>
+      <h1 class="lesson-title"><%= __(lesson.title.trim()) %></h1>
       <p class="lesson-meta">
-        Chapitre : <strong><%= lesson.chapter_title %></strong>
+        <%= __('lesson_chapter_label') %> <strong><%= __(lesson.chapter_title.trim()) %></strong>
       </p>
     </header>
 
@@ -86,14 +87,14 @@
    <section class="lesson-body">
   <% if (lesson.objective && lesson.objective.trim()) { %>
     <div class="card lesson-panel">
-      <h2>Objectif de la leçon</h2>
+      <h2><%= __('lesson_objective') %></h2>
       <p class="muted"><%= lesson.objective %></p>
     </div>
   <% } %>
 
   <% if (lesson.exam_points && lesson.exam_points.trim()) { %>
     <div class="card lesson-panel">
-      <h2>Ce qui tombe à l’examen</h2>
+      <h2><%= __('lesson_exam_points') %></h2>
       <ul class="bullets">
         <% lesson.exam_points.split('\n').forEach(line => { %>
           <% if (line.trim()) { %>
@@ -106,7 +107,7 @@
 
   <% if (lesson.common_mistakes && lesson.common_mistakes.trim()) { %>
     <div class="card lesson-panel">
-      <h2>Erreurs fréquentes</h2>
+      <h2><%= __('lesson_common_mistakes') %></h2>
       <ul class="bullets">
         <% lesson.common_mistakes.split('\n').forEach(line => { %>
           <% if (line.trim()) { %>
@@ -118,10 +119,10 @@
   <% } %>
 </section>
     <section class="resources">
-      <h2 class="section-title">Ressources</h2>
+      <h2 class="section-title"><%= __('course_resources') %></h2>
 
       <div class="resource-block">
-        <h3>Explications</h3>
+        <h3><%= __('course_explanations') %></h3>
         <div class="resource-list">
           <% (files || []).filter(f => f.category === 'explanation').forEach(f => { %>
             <a class="resource-item" href="/files/<%= f.id %>">
@@ -132,14 +133,14 @@
           <% if (!(files || []).some(f => f.category === 'explanation')) { %>
             <div style="padding: 1rem; border: 1px dashed #e5e7eb; border-radius: 12px; background: #f9fafb; display: flex; align-items: center; gap: 10px;">
               <i data-lucide="file-question" style="width: 24px; height: 24px; color: #d1d5db;"></i>
-              <p style="color: #9ca3af; margin: 0; font-size: 0.95rem;">Aucune explication pour le moment.</p>
+              <p style="color: #9ca3af; margin: 0; font-size: 0.95rem;"><%= __('no_explanations_yet') %></p>
             </div>
           <% } %>
         </div>
       </div>
 
       <div class="resource-block">
-        <h3>Exercices</h3>
+        <h3><%= __('course_exercises') %></h3>
         <div class="resource-list">
           <% (files || []).filter(f => f.category === 'exercise').forEach(f => { %>
             <a class="resource-item" href="/files/<%= f.id %>">
@@ -150,14 +151,14 @@
           <% if (!(files || []).some(f => f.category === 'exercise')) { %>
             <div style="padding: 1rem; border: 1px dashed #e5e7eb; border-radius: 12px; background: #f9fafb; display: flex; align-items: center; gap: 10px;">
               <i data-lucide="file-question" style="width: 24px; height: 24px; color: #d1d5db;"></i>
-              <p style="color: #9ca3af; margin: 0; font-size: 0.95rem;">Aucun exercice pour le moment.</p>
+              <p style="color: #9ca3af; margin: 0; font-size: 0.95rem;"><%= __('no_exercises_yet') %></p>
             </div>
           <% } %>
         </div>
       </div>
 
       <div class="resource-block">
-        <h3>Solutions</h3>
+        <h3><%= __('course_solutions') %></h3>
         <div class="resource-list">
           <% (files || []).filter(f => f.category === 'solution').forEach(f => { %>
             <a class="resource-item" href="/files/<%= f.id %>">
@@ -168,7 +169,7 @@
           <% if (!(files || []).some(f => f.category === 'solution')) { %>
             <div style="padding: 1rem; border: 1px dashed #e5e7eb; border-radius: 12px; background: #f9fafb; display: flex; align-items: center; gap: 10px;">
               <i data-lucide="file-question" style="width: 24px; height: 24px; color: #d1d5db;"></i>
-              <p style="color: #9ca3af; margin: 0; font-size: 0.95rem;">Aucune solution pour le moment.</p>
+              <p style="color: #9ca3af; margin: 0; font-size: 0.95rem;"><%= __('no_solutions_yet') %></p>
             </div>
           <% } %>
         </div>
@@ -279,20 +280,20 @@
 <section class="ai-tutor-container card">
   <div class="ai-tutor-header">
     <span style="font-size: 1.5rem;">🤖</span> 
-    Assistant IA : <%= lesson.title %>
+    <%= __('lesson_ai_title') %> : <%= __(lesson.title.trim()) %>
   </div>
   
   <div id="ai-chat-window" class="ai-chat-window">
     <div class="chat-bubble bubble-ai">
-      Bonjour ! Je suis l'assistant IA propulsé par <strong>NVIDIA Nemotron</strong>. As-tu une question sur le chapitre <em><%= lesson.chapter_title %></em> ?
+      <%= __('lesson_ai_intro') %> <strong>NVIDIA Nemotron</strong>. <%= __('lesson_ai_question_prompt') %> <em><%= lesson.chapter_title %></em> ?
     </div>
   </div>
 
   <div class="ai-input-wrapper">
     <input type="hidden" id="lesson-context" value="Chapitre: <%= lesson.chapter_title %> | Leçon: <%= lesson.title %>">
     
-    <input type="text" id="ai-input-field" class="ai-input-field" placeholder="Pose ta question ici..." onkeypress="if(event.key === 'Enter') submitAiQuestion()">
-    <button class="ai-btn-submit" onclick="submitAiQuestion()">Demander</button>
+    <input type="text" id="ai-input-field" class="ai-input-field" placeholder="<%= __('lesson_ai_placeholder') %>" onkeypress="if(event.key === 'Enter') submitAiQuestion()">
+    <button class="ai-btn-submit" onclick="submitAiQuestion()"><%= __('lesson_ai_submit') %></button>
   </div>
 </section>
 
@@ -309,11 +310,11 @@
     inputField.value = '';
     
     const loadingId = 'loading-' + Date.now();
-    chatWindow.innerHTML += `<div id="${loadingId}" class="ai-typing-indicator">L'IA réfléchit...</div>`;
+    chatWindow.innerHTML += `<div id="${loadingId}" class="ai-typing-indicator"><%= __('lesson_ai_thinking') %></div>`;
     chatWindow.scrollTop = chatWindow.scrollHeight;
 
     try {
-      const enrichedQuestion = `[Contexte de la leçon: ${lessonContext}] Question de l'élève: ${question}`;
+      const enrichedQuestion = `[<%= __('lesson_ai_context') %>: ${lessonContext}] <%= __('lesson_ai_student_question') %>: ${question}`;
 
       const response = await fetch('/ask-tutor', {
         method: 'POST',
@@ -331,11 +332,11 @@
             
         chatWindow.innerHTML += `<div class="chat-bubble bubble-ai">${formattedAnswer}</div>`;
       } else {
-        chatWindow.innerHTML += `<div class="chat-bubble bubble-ai" style="color: #ef4444;">Erreur: ${data.error}</div>`;
+        chatWindow.innerHTML += `<div class="chat-bubble bubble-ai" style="color: #ef4444;"><%= __('lesson_ai_error') %>: ${data.error}</div>`;
       }
     } catch (error) {
       document.getElementById(loadingId).remove();
-      chatWindow.innerHTML += `<div class="chat-bubble bubble-ai" style="color: #ef4444;">Erreur de connexion au serveur.</div>`;
+      chatWindow.innerHTML += `<div class="chat-bubble bubble-ai" style="color: #ef4444;"><%= __('lesson_ai_connection_error') %></div>`;
     }
     
     chatWindow.scrollTop = chatWindow.scrollHeight;
@@ -344,22 +345,22 @@
 <!-- ========================================== -->
 
     <section class="cta card">
-  <h3>Bloqué sur cette leçon ?</h3>
+  <h3><%= __('stuck_lesson') %></h3>
   <p class="muted">
-    Envoie-moi un message WhatsApp (leçon + chapitre déjà inclus) et je te guide rapidement.
+    <%= __('wa_help_lesson') %>
   </p>
 
   <div class="cta-row">
     <a class="btn btn-primary" href="<%= whatsappLink %>" target="_blank" rel="noopener">
-      💬 WhatsApp — Aide sur cette leçon
+      <%= __('wa_btn_lesson') %>
     </a>
     <a class="btn btn-secondary" href="/professeur">
-      Voir le professeur
+      <%= __('lesson_view_teacher') %>
     </a>
   </div>
 
   <details class="msg-details">
-    <summary>Voir le message envoyé</summary>
+    <summary><%= __('lesson_view_sent_message') %></summary>
     <pre class="msg-box"><%= whatsappTextDisplay %></pre>
   </details>
 </section>
@@ -367,19 +368,20 @@
     <nav class="lesson-nav">
       <div>
         <% if (prevLesson) { %>
-          <a class="nav-btn" href="/lesson/<%= prevLesson.id %>">← Leçon précédente</a>
+          <a class="nav-btn" href="/lesson/<%= prevLesson.id %>"><%= __('prev_lesson') %></a>
         <% } %>
       </div>
       <div>
         <% if (nextLesson) { %>
-          <a class="nav-btn" href="/lesson/<%= nextLesson.id %>">Leçon suivante →</a>
+          <a class="nav-btn" href="/lesson/<%= nextLesson.id %>"><%= __('next_lesson') %></a>
         <% } %>
       </div>
     </nav>
     <a class="sticky-wa"
    href="<%= whatsappLink %>"
    target="_blank" rel="noopener">
-  💬 WhatsApp — Aide sur cette leçon
+  <%= __('wa_btn_lesson') %>
    </a>
   </section>
+</div>
 </div>

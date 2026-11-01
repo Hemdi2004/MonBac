@@ -21,7 +21,8 @@ i18n.configure({
   locales: ["fr", "ar", "en"],
   directory: path.join(__dirname, "locales"),
   defaultLocale: "fr",
-  cookie: "lang"
+  cookie: "lang",
+  updateFiles: false
 });
 
 app.use(express.json());

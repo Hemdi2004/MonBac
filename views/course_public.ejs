@@ -1,37 +1,36 @@
+<div class="course-page" dir="<%= locale === 'ar' ? 'rtl' : 'ltr' %>">
 <nav class="breadcrumb">
-  <a href="/">Accueil</a>
+  <a href="/"><%= __('breadcrumb_home') %></a>
   <span class="sep">›</span>
-  <span class="current"><%= course.title %></span>
+  <span class="current"> <%= __(course.title) %></span>
 </nav>
 
-<a class="btn btn-secondary" href="javascript:history.back()">← Retour</a>
+<a class="btn btn-secondary" href="/"><%= __('btn_return') %></a>
 
 <header class="course-hero card">
-  <p class="badge">Bac Maroc</p>
-  <h1 class="course-title"><%= course.title %></h1>
+  <p class="badge"><%= __('course_badge') %></p>
+  <h1 class="course-title"><%= __(course.title) %></h1>
 
-  <% if (course.description) { %>
-    <p class="lead"><%= course.description %></p>
-  <% } else { %>
+
     <p class="lead">
-      Chapitres, leçons, exercices et corrigés pour progresser étape par étape.
+      <%= __('course_intro_fallback') %>
     </p>
-  <% } %>
+
 
   <p class="muted">
-    Conseil : commencez par le premier chapitre, puis suivez l’ordre des leçons.
+    <%= __('course_start_advice') %>
   </p>
 </header>
 
 <section class="course-contents">
-  <h2 class="section-title">Chapitres & Leçons</h2>
+  <h2 class="section-title"><%= __('course_contents_title') %></h2>
 
   <% if (!chapters || chapters.length === 0) { %>
     <!-- Clean, semantic empty state block utilizing component-level empty CSS classes -->
     <div class="empty-state empty-state-dashed">
       <i data-lucide="book-open" class="empty-state-icon"></i>
-      <h3 class="empty-state-heading">Aucun contenu pour le moment</h3>
-      <p class="empty-state-text">Ce cours vient d'être créé. Le professeur ajoute les chapitres bientôt !</p>
+      <h3 class="empty-state-heading"><%= __('course_empty_title') %></h3>
+      <p class="empty-state-text"><%= __('course_empty_desc') %></p>
     </div>
   <% } else { %>
     <div class="chapters-grid">
@@ -42,11 +41,11 @@
             <div class="chapter-heading">
               <span class="chapter-mark" aria-hidden="true"><i data-lucide="layers"></i></span>
               <div>
-                <p class="chapter-eyebrow">Chapitre <%= chapter.position %></p>
-                <h3 class="chapter-title"><%= chapter.title %></h3>
+                <p class="chapter-eyebrow"><%= __('course_chapter_label') %> <%= chapter.position %></p>
+                <h3 class="chapter-title"><%= __(chapter.title.trim()) %></h3>
               </div>
             </div>
-            <span class="chapter-count"><%= filteredLessons.length %> <%= filteredLessons.length === 1 ? 'leçon' : 'leçons' %></span>
+            <span class="chapter-count"><%= filteredLessons.length %> <%= filteredLessons.length === 1 ? __('course_lesson_singular') : __('course_lesson_plural') %></span>
           </header>
 
           <ul class="lesson-list">
@@ -54,7 +53,7 @@
             <% if (filteredLessons.length === 0) { %>
               <li class="empty-state-item text-center">
                  <i data-lucide="file-x" class="empty-state-item-icon"></i>
-                 <p class="empty-state-item-text">Les leçons de ce chapitre arrivent bientôt.</p>
+                 <p class="empty-state-item-text"><%= __('course_no_lessons') %></p>
               </li>
             <% } else { %>
               <% filteredLessons.forEach((lesson, index) => { %>
@@ -62,7 +61,7 @@
                   <a class="lesson-link" href="/lesson/<%= lesson.id %>">
                     <span class="lesson-left">
                       <i data-lucide="book-open" class="lesson-icon" aria-hidden="true"></i>
-                      <span class="lesson-name"><%= lesson.title %></span>
+                      <span class="lesson-name"><%= __(lesson.title.trim()) %></span>
                     </span>
                     <span class="lesson-arrow">→</span>
                   </a>
@@ -77,12 +76,13 @@
 </section>
 
 <section class="card course-help">
-  <h2>Besoin d’un accompagnement pour ce cours ?</h2>
+  <h2><%= __('course_help_title') %></h2>
   <p class="muted">
-    Cours à distance et groupes de révision disponibles. Indiquez le chapitre/la leçon et votre objectif.
+    <%= __('course_help_desc') %>
   </p>
   <div class="cta-row">
-    <a class="btn btn-primary" href="/professeur">Contacter le professeur</a>
-    <a class="btn btn-secondary" href="/">← Retour aux cours</a>
+    <a class="btn btn-primary" href="/professeur"><%= __('course_contact_teacher') %></a>
+    <a class="btn btn-secondary" href="/"><%= __('course_back_courses') %></a>
   </div>
 </section>
+</div>
